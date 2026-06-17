@@ -1,5 +1,11 @@
 # Project template for AI-Assisted development
 
+> **🚧 Migration in Progress: Claude Code → Mistral Vibe CLI**
+> 
+> This template is currently being migrated from Claude Code to Mistral Vibe CLI. The migration is a work in progress. See [SPECIFICATIONS/AGENTS.md](./SPECIFICATIONS/AGENTS.md) for implementation phases and [SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md) for the migration vision.
+> 
+> **Current status:** Phase 1 (Research and Foundation) - Specifications created, migration underway
+
 My (Magnus Hultberg) battle-tested project template for working with AI coding assistants, refined over 12-18 months of AI-assisted development using Claude Code.
 
 ## What is this
