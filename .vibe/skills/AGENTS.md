@@ -8,113 +8,192 @@
 
 Skills are defined in SKILL.md files within subdirectories. Each skill is a self-contained, reusable workflow.
 
-### Current Skills
+### PR Review Skills
 
 | Skill | Purpose | Invocation | Status |
 |-------|---------|------------|--------|
-| `review-pr` | Triage and review pull requests | `skill(name="review-pr")` | ⏳ Planned (Phase 5) |
-| `review-pr-team` | Full multi-perspective team review | `skill(name="review-pr-team")` | ⏳ Planned (Phase 5) |
-| `review-spec` | Review feature specifications | `skill(name="review-spec")` | ⏳ Planned (Phase 5) |
+| [`review-pr/`](./review-pr/SKILL.md) | Smart dispatcher: triages PR for risk, then routes to light/standard/team review | `skill(name="review-pr", args="42")` or `/review-pr 42` | ✅ Migrated |
+| [`review-pr-team/`](./review-pr-team/SKILL.md) | Full multi-perspective team review: security, product, architect, docs perspectives | `skill(name="review-pr-team", args="42")` or `/review-pr-team 42` | ✅ Migrated |
+| [`review-gate.md`](./review-gate.md) | Shared gate logic for all review skills (checks prReviewMode) | Internal (referenced by other skills) | ✅ Migrated |
+
+### Spec Review Skills
+
+| Skill | Purpose | Invocation | Status |
+|-------|---------|------------|--------|
+| [`review-spec/`](./review-spec/SKILL.md) | Spec review: completeness, feasibility, strategy analysis with 3 specialized reviewers | `skill(name="review-spec", args="SPECIFICATIONS/07-feature.md")` or `/review-spec SPECIFICATIONS/07-feature.md` | ✅ Migrated |
+
+### Setup Skills
+
+| Skill | Purpose | Invocation | Status |
+|-------|---------|------------|--------|
+| [`check-profile-setup/`](./check-profile-setup/SKILL.md) | Verify profile setup (replaces SessionStart hook) | `skill(name="check-profile-setup")` or `/check-profile-setup` | ✅ Created |
+| [`setup-profile/`](./setup-profile/SKILL.md) | Guide user through profile setup | `skill(name="setup-profile")` or `/setup-profile` | ✅ Created |
+
+### Supporting Skills
+
+| Skill | Purpose | Invocation | Status |
+|-------|---------|------------|--------|
+| [`post-review-follow-through.md`](./post-review-follow-through.md) | Re-bucket findings, surface decisions, create GitHub issues | Internal (referenced by review skills) | ✅ Migrated |
+
+---
+
+## Usage Pattern
+
+### Invoking Skills
+
+Users can invoke skills in several ways (depending on Vibe's current capabilities):
+
+1. **Slash command**: `/review-pr 42` (if Vibe supports slash commands)
+2. **Skill tool**: `skill: {"name": "review-pr", "args": "42"}`
+3. **Chat**: "Run the review-pr skill on PR 42"
 
 ### Skill Structure
 
-Each skill is defined in a SKILL.md file with this structure:
+Each skill has:
+- YAML frontmatter with metadata (name, description, arguments, user-invocable)
+- Clear step-by-step instructions
+- Error handling guidelines
+- Result processing instructions
+- Vibe-specific adaptation notes
+
+### Spawning Subagents
+
+Vibe uses the `task` tool to spawn subagents (replacing Claude's `SpawnAgent`):
 
 ```
-## Skill Definition
-- name: review-pr
-- description: Triage and review pull requests
-- user-invocable: true
-
-## Steps
-1. [Step 1 description]
-2. [Step 2 description]
-...
+task: {
+  "agent": "agent-name",
+  "task": "What the agent should do",
+  "context": {"optional": "context"}
+}
 ```
+
+The skill receives results from the task and can process them programmatically.
+
+### Skill-to-Agent Mapping
+
+| Skill | Primary Agents Used |
+|-------|---------------------|
+| `review-pr` | triage-reviewer, light-reviewer, code-reviewer, technical-writer |
+| `review-pr-team` | security-specialist, product-reviewer, architect-reviewer, technical-writer |
+| `review-spec` | requirements-auditor, technical-skeptic, devils-advocate |
+| `check-profile-setup` | None (direct file checks) |
+| `setup-profile` | None (interactive setup) |
 
 ---
 
-## Migration Status
+## Shared Patterns
 
-Claude slash-command skills will be migrated to Vibe skills in **Phase 5: Skills Migration**.
+All review skills share these common patterns:
 
-### Claude → Vibe Mapping
-
-| Claude Slash Command | Vibe Skill | Migration Notes |
-|-----------------------|-------------|-----------------|
-| `/review-pr` | `review-pr` | Convert to SKILL.md, use `task` for subagents |
-| `/review-pr-team` | `review-pr-team` | Full team review workflow |
-| `/review-spec` | `review-spec` | Spec review workflow |
-| `/review-gate` | `review-gate` | Gate logic, may be embedded in other skills |
-
-### Key Differences
-
-| Aspect | Claude | Vibe |
-|--------|--------|------|
-| Invocation | `/command` | `skill(name="command")` |
-| Definition | Markdown + YAML frontmatter | SKILL.md file |
-| Agent spawning | `SpawnAgent` in skill | `task` tool in skill |
-| Discovery | Slash command list | `skill` tool discovery |
+1. **Gate check** - Verify `prReviewMode` allows execution via [`review-gate.md`](./review-gate.md)
+2. **Input validation** - Validate arguments before processing (especially PR numbers)
+3. **Context gathering** - Fetch PR/spec details, read AGENTS.md
+4. **Subagent orchestration** - Spawn and coordinate subagents via `task` tool
+5. **Result processing** - Combine findings, format output
+6. **Action execution** - Post comments, create files, etc.
+7. **Follow-through** - Run [`post-review-follow-through.md`](./post-review-follow-through.md) protocol
 
 ---
 
-## Skill Development Guidelines
+## Vibe-Specific Enhancements
 
-### When to Create a Skill
+### Parallel Execution
 
-Create a skill when:
-- The workflow is reused across projects
-- The workflow involves multiple steps
-- The workflow benefits from subagent delegation
-- The workflow needs consistent execution
+Vibe's `task` tool supports parallel execution. Review skills should:
+- Spawn independent tasks (like triage, light-reviewer, technical-writer) in parallel
+- Wait for all results before proceeding
+- Handle results appropriately
 
-### Skill Best Practices
+### Result Handling
 
-1. **Single responsibility**: Each skill should do one thing well
-2. **Idempotent**: Safe to run multiple times
-3. **Clear inputs**: Document required parameters
-4. **Structured outputs**: Return consistent, parseable results
-5. **Error handling**: Graceful degradation on failures
+Vibe returns results from `task` calls that can be:
+- Processed programmatically in subsequent steps
+- Displayed to user
+- Used for conditional logic
 
-### Skill Location
+### MCP Integration
 
-Skills are organized in subdirectories under `.vibe/skills/`:
+When MCP servers are enabled, skills can:
+- Access live documentation via MCP servers
+- Check package versions and dependencies
+- Verify API contracts
+- Fetch external resources
 
-```
-.vibe/skills/
-├── review-pr/
-│   └── SKILL.md
-├── review-pr-team/
-│   └── SKILL.md
-├── review-spec/
-│   └── SKILL.md
-└── AGENTS.md (this file)
-```
+This enhances spec review and code review capabilities.
 
 ---
 
 ## The prReviewMode Setup Challenge
 
-**Important**: Unlike Claude's hook-based approach, Vibe skills only prompt when explicitly invoked. This creates a catch-22:
+**Important Architecture Note**: 
+
+Unlike Claude's hook-based approach (SessionStart hook), Vibe skills only execute when explicitly invoked. This creates a catch-22:
 
 1. User doesn't know about review skills
 2. Never invokes them
 3. Never gets prompted to set up prReviewMode
 4. Never discovers the skills
 
-### Potential Solutions (to be addressed in Phase 5)
+### Solutions Implemented
 
-1. **Documentation-first**: Strong AGENTS.md instructions that Vibe surfaces
-2. **First-use detection**: Skills check for config on first invocation
-3. **MCP GitHub integration**: Detect PR events and proactively prompt
-4. **Tool permission prompts**: Use bash tool confirmation messages to mention review system
+1. **First-use detection**: Each review skill checks the gate on first invocation, which prompts for prReviewMode setup
+2. **Explicit setup skills**: `/check-profile-setup` and `/setup-profile` provide the hook-like functionality as user-invocable skills
+3. **Documentation**: Strong AGENTS.md instructions and README references
 
-See Phase 1 spec for detailed discussion of this architectural challenge.
+### Recommended Usage
+
+- Run `/check-profile-setup` at the start of each new project
+- Run it periodically to verify configuration
+- Document it in TEMPLATE-INSTRUCTIONS.md as the first step
+
+---
+
+## Migration Notes
+
+### Claude → Vibe Conversion Summary
+
+| Aspect | Claude Code | Mistral Vibe | Migration Note |
+|--------|-------------|--------------|----------------|
+| Invocation | Slash command `/name` | `skill` tool or `/name` | May support both |
+| Definition | Markdown + YAML frontmatter | SKILL.md file | Structure preserved |
+| Arguments | `argument-hint` array | `arguments` array | Format updated |
+| Agent spawning | SpawnAgent action | `task` tool | Updated all skills |
+| Model invocation | `disable-model-invocation` | Not needed | Removed from frontmatter |
+| User invocable | `user-invocable: true` | Same | Preserved |
+| File paths | `.claude/` directory | `.vibe/` directory | All updated |
+
+### Agent Teams Adaptation
+
+Claude Code had an **experimental agent teams feature** that allowed spawned agents to discuss with each other. Vibe does not have this feature.
+
+**Adaptation approach:**
+- Spawn multiple independent subagents via `task` tool
+- Collect all results
+- Explicitly synthesize findings (replicating the discussion benefit)
+- Document the trade-off in each affected skill
+
+This approach provides equivalent quality with different execution model.
 
 ---
 
 ## Related Documentation
 
-- [Root AGENTS.md](../AGENTS.md) - Collaboration principles
-- [Phase 5: Skills Migration](../../SPECIFICATIONS/05-skills-migration.md) - Migration plan
-- [.claude/skills/CLAUDE.md](../../.claude/skills/CLAUDE.md) - Original Claude skills (archive)
+- [Root AGENTS.md](../AGENTS.md) - Collaboration principles and project navigation
+- [.vibe/agents/AGENTS.md](../agents/AGENTS.md) - Subagent library index
+- [.vibe/config/README.md](../config/README.md) - Configuration documentation
+- [SPECIFICATIONS/05-skills-migration.md](../../SPECIFICATIONS/05-skills-migration.md) - Phase 5 specification
+- [ORIGINAL_IDEA/project-outline.md](../../ORIGINAL_IDEA/project-outline.md) - Master specification
+
+---
+
+## Archive Reference
+
+Original Claude skills are preserved in the `.claude/skills/` directory:
+- `review-pr/SKILL.md`
+- `review-pr-team/SKILL.md`
+- `review-spec/SKILL.md`
+- `review-gate.md`
+- `post-review-follow-through.md`
+
+These are kept for backward compatibility and reference. All new Vibe skills use `.vibe/skills/` paths.
