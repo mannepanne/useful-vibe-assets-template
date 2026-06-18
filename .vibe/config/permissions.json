@@ -1,0 +1,127 @@
+{
+  "_meta": {
+    "description": "Vibe tool permission configuration. Replaces Claude's .claude/settings.json allowlist + hooks model.",
+    "note": "This is a declarative permission system. Each tool can be: allow (runs without prompt), confirm (prompts user), deny (blocked)."
+  },
+  
+  "default": {
+    "mode": "allow",
+    "description": "Default permission for tools not explicitly listed"
+  },
+  
+  "tools": {
+    "read": {
+      "mode": "allow",
+      "description": "Read file contents - always allowed"
+    },
+    
+    "write_file": {
+      "mode": "allow",
+      "description": "Create new files - generally safe"
+    },
+    
+    "edit": {
+      "mode": "allow",
+      "description": "Edit existing files - generally safe"
+    },
+    
+    "grep": {
+      "mode": "allow",
+      "description": "Search files - read-only operation"
+    },
+    
+    "bash": {
+      "mode": "confirm",
+      "description": "Shell commands require user confirmation",
+      "deny_patterns": [
+        "rm -rf /",
+        "rm -rf \\$",
+        "rm -rf ~",
+        "rm -rf /home",
+        "rm -rf /Users",
+        "chmod -R 777",
+        "chmod -R a\\+w",
+        "dd if=",
+        "mkfs",
+        "drop database",
+        "drop schema",
+        "drop table",
+        "git push --force",
+        "git reset --hard",
+        "git clean -fd",
+        ":(){ :|:& };:"
+      ],
+      "allow_patterns": [
+        "git status",
+        "git log",
+        "git diff",
+        "git branch",
+        "git checkout",
+        "ls",
+        "pwd",
+        "echo",
+        "cat",
+        "head",
+        "tail",
+        "wc",
+        "find . -name",
+        "grep"
+      ]
+    },
+    
+    "ask_user_question": {
+      "mode": "allow",
+      "description": "Ask clarification questions - always allowed"
+    },
+    
+    "task": {
+      "mode": "allow",
+      "description": "Spawn subagents - core Vibe capability"
+    },
+    
+    "skill": {
+      "mode": "allow",
+      "description": "Load skills - core Vibe capability"
+    },
+    
+    "web_search": {
+      "mode": "confirm",
+      "description": "Web search requires confirmation (token cost)"
+    },
+    
+    "web_fetch": {
+      "mode": "confirm",
+      "description": "Web fetch requires confirmation (token cost)"
+    },
+    
+    "todo": {
+      "mode": "allow",
+      "description": "Task management - always allowed"
+    }
+  },
+  
+  "paths": {
+    "allow": [
+      ".*",
+      ".vibe/.*",
+      "SPECIFICATIONS/.*",
+      "REFERENCE/.*",
+      "SCRATCH/.*"
+    ],
+    "confirm": [],
+    "deny": [
+      ".git/.*",
+      "node_modules/.*",
+      ".venv/.*",
+      ".env.*",
+      "*.local",
+      "*.secret"
+    ]
+  },
+  
+  "notes": {
+    "migration": "This configuration adapts the safety patterns from .claude/hooks/safety-harness.sh. The deny_patterns come from the hook's test fixtures.",
+    "catch-22": "Note: Unlike Claude's PreToolUse hooks, this is declarative. There's no imperative interception - tools are either allowed, confirmed, or denied based on this config.",
+    "scratch_writes": "Writes to SCRATCH/ are allowed without confirmation (adapting approve-scratch-write.sh hook)"
+  }
+}
