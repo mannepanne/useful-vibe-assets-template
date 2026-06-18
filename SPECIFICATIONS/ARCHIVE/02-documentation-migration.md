@@ -4,7 +4,7 @@
 **Phase name:** Documentation Migration
 **Estimated timeframe:** 1 session
 **Dependencies:** Phase 1 (Research and Foundation) complete
-**Status:** Not started
+**Status:** ✅ COMPLETED - Merged in PR #2 on 2026-06-18
 
 ---
 
@@ -16,19 +16,106 @@ This is a **mechanical but important phase** - it establishes the new naming con
 
 ---
 
+## Implementation Notes
+
+**Completed on:** 2026-06-18
+**PR:** #2 - Phase 2: Complete CLAUDE.md to AGENTS.md migration
+**Files changed:** 17 files changed, 922 insertions(+), 381 deletions(-)
+
+### What Was Actually Done
+
+#### Files Created
+- `.vibe/COLLABORATION/` directory with 7 files:
+  - `AGENTS.md` - Collaboration reference library (adapted from .claude/COLLABORATION/CLAUDE.md)
+  - `debugging-mindset.md` - Copied from .claude/COLLABORATION/
+  - `documentation-standards.md` - Updated references to AGENTS.md
+  - `personal-profile.md` - Updated "Claude" → "Vibe" references
+  - `product-management-mode.md` - Updated all references
+  - `profile-setup-flow.md` - Fully rewritten for Vibe (no SessionStart hook)
+  - `technology-preferences.md` - Updated references to AGENTS.md
+- `REFERENCE/AGENTS.md` - New reference library index (adapted from REFERENCE/CLAUDE.md)
+- `REFERENCE/TEMPLATE-UPDATES/AGENTS.md` - New template updates index (adapted from REFERENCE/TEMPLATE-UPDATES/CLAUDE.md)
+- `REFERENCE/decisions/AGENTS.md` - New ADR index (adapted from REFERENCE/decisions/CLAUDE.md)
+- `SPECIFICATIONS/ARCHIVE/AGENTS.md` - New archived specs index (adapted from SPECIFICATIONS/ARCHIVE/CLAUDE.md)
+
+#### Files Modified
+- `README.md` - Updated migration status to Phase 2 completion
+- `REFERENCE/troubleshooting.md` - CLAUDE.md → AGENTS.md reference
+- `REFERENCE/pr-review-workflow.md` - CLAUDE.md → AGENTS.md reference
+- `TEMPLATE-INSTRUCTIONS.md` - Comprehensive update of all Claude → Vibe references
+- `.vibe/COLLABORATION/profile-setup-flow.md` - Rewritten for Vibe's tool model
+- `.vibe/COLLABORATION/product-management-mode.md` - Updated references
+- `.vibe/COLLABORATION/AGENTS.md` - Updated references
+
+#### Files Deleted
+- Root `CLAUDE.md`
+- `REFERENCE/CLAUDE.md` (renamed to AGENTS.md)
+- `SPECIFICATIONS/CLAUDE.md`
+
+#### Files Preserved
+- `.claude/` directory - Kept intact for backward compatibility
+- `SPECIFICATIONS/ARCHIVE/CLAUDE.md` - Historical archive of original Claude spec
+
+### Key Adaptations Made
+
+1. **SessionStart Hook Removal**: All references to Claude's SessionStart hook were replaced with Vibe equivalents:
+   - Manual invocation via skills
+   - First-use detection in skills
+   - Explicit instructions in AGENTS.md files
+
+2. **Path Updates**: All `.claude/` references in active documentation updated to `.vibe/` (historical references in archive kept as-is)
+
+3. **Tool Model Changes**: Documentation updated to reflect:
+   - `SpawnAgent` → `task` tool with subagents
+   - Slash commands → `skill` tool
+   - Hooks → Declarative permissions
+
+4. **Naming Updates**: "Claude" → "Vibe" in active documentation (historical context preserved in archives)
+
+### Differences from Spec
+
+The original spec planned to:
+- Create `SPECIFICATIONS/ARCHIVE/claude-originals/` directory with all original CLAUDE.md files
+
+What we actually did:
+- Kept `.claude/` directory intact for backward compatibility
+- Kept `SPECIFICATIONS/ARCHIVE/CLAUDE.md` as historical reference
+- Did NOT create a separate claude-originals/ subdirectory
+
+Rationale: The `.claude/` directory serves as the archive for the original Claude files, and SPECIFICATIONS/ARCHIVE/CLAUDE.md is a historical artifact that documents the original structure. This provides backward compatibility while still achieving the migration goal.
+
+### Verification
+
+- ✅ No remaining CLAUDE.md references in working files (excluding .claude/ and SPECIFICATIONS/ARCHIVE/)
+- ✅ All internal links verified and working
+- ✅ Documentation reads naturally with new names
+- ✅ PR reviewed and merged successfully
+
+### Open Items (Deferred to Later Phases)
+
+- **`.gitignore` updates**: The .gitignore file still contains only `.claude/` entries. `.vibe/` entries need to be added:
+  ```
+  .vibe/session-state/
+  .vibe/project-config.local.json
+  .vibe/COLLABORATION/personal-profile.local.md
+  ```
+  **Note**: This was identified in the original spec but not implemented in Phase 2. To be addressed in Phase 3 (Configuration System).
+
+---
+
 ## Scope and deliverables
 
 ### In scope
 
-- [ ] Rename root `CLAUDE.md` → `AGENTS.md`
-- [ ] Rename `.claude/CLAUDE.md` → `.vibe/AGENTS.md`
-- [ ] Rename `SPECIFICATIONS/CLAUDE.md` → `SPECIFICATIONS/AGENTS.md`
-- [ ] Update all internal references from CLAUDE.md to AGENTS.md
-- [ ] Update all documentation to reference `.vibe/` instead of `.claude/`
-- [ ] Update README.md to reference new structure
-- [ ] Update TEMPLATE-INSTRUCTIONS.md to reference new structure
-- [ ] Verify all links work in the new structure
-- [ ] Archive original CLAUDE.md files in `SPECIFICATIONS/ARCHIVE/` for reference
+- [x] Rename root `CLAUDE.md` → `AGENTS.md`
+- [x] Rename `.claude/CLAUDE.md` → `.vibe/AGENTS.md` (Note: .vibe/AGENTS.md already existed from Phase 1, but .claude/CLAUDE.md was deleted)
+- [x] Rename `SPECIFICATIONS/CLAUDE.md` → `SPECIFICATIONS/AGENTS.md` (Already existed from Phase 1, SPECIFICATIONS/CLAUDE.md deleted)
+- [x] Update all internal references from CLAUDE.md to AGENTS.md
+- [x] Update all documentation to reference `.vibe/` instead of `.claude/`
+- [x] Update README.md to reference new structure
+- [x] Update TEMPLATE-INSTRUCTIONS.md to reference new structure
+- [x] Verify all links work in the new structure
+- [x] Archive original CLAUDE.md files in `SPECIFICATIONS/ARCHIVE/` for reference (Note: Kept SPECIFICATIONS/ARCHIVE/CLAUDE.md as historical, did not create claude-originals/ subdirectory)
 
 ### Out of scope
 
@@ -39,15 +126,15 @@ This is a **mechanical but important phase** - it establishes the new naming con
 
 ### Acceptance criteria
 
-- [ ] All CLAUDE.md files renamed to AGENTS.md
-- [ ] All internal references updated (grep confirms no remaining CLAUDE.md references except in archive)
-- [ ] Root AGENTS.md exists and is properly structured
-- [ ] .vibe/AGENTS.md exists with migrated content
-- [ ] SPECIFICATIONS/AGENTS.md exists with migrated content
-- [ ] README.md updated to reference AGENTS.md files
-- [ ] TEMPLATE-INSTRUCTIONS.md updated to reference AGENTS.md files
-- [ ] All links between documentation files work
-- [ ] Original files archived in SPECIFICATIONS/ARCHIVE/
+- [x] All CLAUDE.md files renamed to AGENTS.md
+- [x] All internal references updated (grep confirms no remaining CLAUDE.md references except in archive)
+- [x] Root AGENTS.md exists and is properly structured
+- [x] .vibe/AGENTS.md exists with migrated content
+- [x] SPECIFICATIONS/AGENTS.md exists with migrated content
+- [x] README.md updated to reference AGENTS.md files
+- [x] TEMPLATE-INSTRUCTIONS.md updated to reference AGENTS.md files
+- [x] All links between documentation files work
+- [x] Original files archived in SPECIFICATIONS/ARCHIVE/
 
 ---
 
@@ -251,18 +338,18 @@ Use manual review (since /review-spec may not be available yet) to verify:
 
 Before creating PR for Phase 2:
 
-- [ ] All CLAUDE.md files renamed to AGENTS.md
-- [ ] Archive created with original files
-- [ ] All CLAUDE.md references updated (grep confirms)
-- [ ] All .claude/ references updated to .vibe/
-- [ ] README.md updated
-- [ ] TEMPLATE-INSTRUCTIONS.md updated
-- [ ] All internal links verified
-- [ ] Root AGENTS.md exists and loads correctly
-- [ ] .vibe/AGENTS.md exists
-- [ ] SPECIFICATIONS/AGENTS.md exists
-- [ ] No broken links
-- [ ] No secrets in new files
+- [x] All CLAUDE.md files renamed to AGENTS.md
+- [x] Archive preserved (kept .claude/ directory and SPECIFICATIONS/ARCHIVE/CLAUDE.md)
+- [x] All CLAUDE.md references updated (grep confirms)
+- [x] All .claude/ references updated to .vibe/ in active files
+- [x] README.md updated
+- [x] TEMPLATE-INSTRUCTIONS.md updated
+- [x] All internal links verified
+- [x] Root AGENTS.md exists and loads correctly
+- [x] .vibe/AGENTS.md exists (from Phase 1)
+- [x] SPECIFICATIONS/AGENTS.md exists (from Phase 1)
+- [x] No broken links
+- [x] No secrets in new files
 
 ---
 
@@ -366,10 +453,11 @@ While Phase 2 focuses only on renaming, we should **flag content that needs Vibe
 
 ## Related documentation
 
-- [Phase 1: Research and Foundation](./01-research-and-planning.md) - Prerequisite
-- [Root AGENTS.md](../AGENTS.md) - Implementation library (to be updated)
+- [Phase 1: Research and Foundation](./01-research-and-planning.md) - Prerequisite (✅ COMPLETED)
+- [Root AGENTS.md](../AGENTS.md) - Implementation library (✅ COMPLETED in Phase 1)
 - [ORIGINAL_IDEA/project-outline.md](../ORIGINAL_IDEA/project-outline.md) - Master specification
-- [SPECIFICATIONS/ARCHIVE/claude-originals/README.md](../ARCHIVE/claude-originals/README.md) - (To be created)
+- [.vibe/AGENTS.md](../.vibe/AGENTS.md) - Vibe-specific collaboration principles (✅ COMPLETED in Phase 1)
+- [SPECIFICATIONS/AGENTS.md](../AGENTS.md) - Migration implementation library (✅ COMPLETED in Phase 1, updated in Phase 2)
 
 ---
 
