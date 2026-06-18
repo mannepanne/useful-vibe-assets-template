@@ -35,7 +35,7 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 
 ## Current Migration Status
 
-**Current phase:** Phase 4 (Agent & Subagent Migration) - Phase 3 ✅ Complete and archived in PR #3
+**Current phase:** Phase 5 (Skills Migration) - Phase 4 ✅ Complete and archived in PR #4
 
 **Phase 1 Completed:**
 - ✅ `.vibe/` directory structure established
@@ -65,7 +65,19 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 - ✅ `REFERENCE/vibe-permissions.md` created with comprehensive permission documentation
 - ✅ `.gitignore` updated with .vibe/ specific entries
 - ✅ PR #3 merged successfully
-- ✅ Spec to be archived in SPECIFICATIONS/ARCHIVE/03-configuration-system.md
+- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/03-configuration-system.md
+
+**Phase 4 Completed:**
+- ✅ All agent files migrated from `.claude/agents/` to `.vibe/agents/`
+- ✅ Frontmatter converted to Vibe format (YAML array for tools, default model, no color)
+- ✅ Tool grant asymmetry maintained (spec agents have web_search/web_fetch, PR agents don't)
+- ✅ All internal references updated (CLAUDE.md → AGENTS.md, .claude/ → .vibe/)
+- ✅ Titles updated from "Agent" to "Subagent"
+- ✅ `.vibe/agents/AGENTS.md` created with comprehensive index
+- ✅ `triage-scan-patterns.txt` copied
+- ✅ Verification script created and passing
+- ✅ PR #4 merged successfully
+- ✅ Spec to be archived in SPECIFICATIONS/ARCHIVE/04-agent-subagent-migration.md
 
 ---
 

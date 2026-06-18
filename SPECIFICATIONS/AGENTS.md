@@ -22,7 +22,7 @@ The SPECIFICATIONS folder contains **forward-looking plans** for migrating this 
 
 Development is organised into **7 sequential phases**. Each phase focuses on a specific aspect of the migration, with clear deliverables and acceptance criteria.
 
-**Current phase:** Phase 4 - Agent & Subagent Migration
+**Current phase:** Phase 5 - Skills Migration
 
 ### Phase files (work through in order)
 
@@ -35,8 +35,8 @@ Development is organised into **7 sequential phases**. Each phase focuses on a s
 3. **[03-configuration-system.md](./ARCHIVE/03-configuration-system.md)** - Phase 3: Configuration System (✅ COMPLETED - archived in PR #3)
    Created .vibe/ directory structure, project config, permission system adaptation. Established Vibe's declarative permission model replacing Claude's hooks.
 
-4. **[04-agent-subagent-migration.md](./04-agent-subagent-migration.md)** - Phase 4: Agent & Subagent Migration
-   Convert Claude agent definitions to Vibe subagent definitions, leverage task delegation
+4. **[04-agent-subagent-migration.md](./ARCHIVE/04-agent-subagent-migration.md)** - Phase 4: Agent & Subagent Migration (✅ COMPLETED - archived in PR #4)
+   Migrated all Claude agent definitions to Vibe subagent profiles with proper frontmatter, tool grant asymmetry, and Vibe-specific enhancements.
 
 5. **[05-skills-migration.md](./05-skills-migration.md)** - Phase 5: Skills Migration
    Convert slash-command skills (/review-pr, /review-pr-team, /review-spec) to Vibe skills
