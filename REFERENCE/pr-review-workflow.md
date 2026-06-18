@@ -1,7 +1,7 @@
 # Review Workflow
 
 **Related Documents:**
-- [Development Workflow](../CLAUDE.md#development-workflow)
+- [Development Workflow](../AGENTS.md#development-workflow)
 - [Testing Strategy](./testing-strategy.md)
 
 **Skills Available:**

@@ -1,6 +1,10 @@
 # Reference Documentation Library
 
-Auto-loaded when working with files in this directory. How-it-works documentation for implemented features.
+Auto-loaded when working with files in this directory. How-it-works documentation for implemented features with Mistral Vibe.
+
+> **Note**: This file adapts the original `REFERENCE/CLAUDE.md` for Vibe's tool model.
+
+---
 
 ## Files in this directory
 
@@ -24,20 +28,12 @@ Common issues and solutions for local development, deployment, and API integrati
 
 How to use `/review-spec` (pre-implementation), `/review-pr`, and `/review-pr-team` skills.
 
-### [profile-setup-hook.md](./profile-setup-hook.md)
-**When to read:** The profile setup prompt fired and you want to understand what's going on, you want to suppress or disable the hook, or you want to extend the setup flow.
-
-What the hook detects, the `.local` file pattern, how the signal is consumed by Claude, test command, extension points, and removal steps. Decision rationale at [`decisions/2026-05-24-personal-profile-setup-sentinel.md`](./decisions/2026-05-24-personal-profile-setup-sentinel.md).
-
 ### [safety-harness.md](./safety-harness.md)
 **When to read:** A safety-harness block or ask dialog fired and you want to understand what's going on, you want to add a pattern, or you want to bypass the hook for a legitimate use.
 
 What's caught at block / ask tier, what's deliberately not caught, how the inline `SAFETY_HARNESS_OFF=1` bypass works (and its limits), how the hook composes with the allowlist, how to extend patterns + tests.
 
-### [scratch-write-hook.md](./scratch-write-hook.md)
-**When to read:** Reviewing or extending the `Write` auto-approval for `<project>/SCRATCH/`, debugging a SCRATCH/ Write prompt that fired unexpectedly, or removing the hook if upstream Claude Code fixes the underlying matcher.
-
-What the hook approves and why, where it sits in the call path alongside `safety-harness.sh`, what's deliberately out of scope (symlinks, exotic filenames), how to extend, and the rollback path if the upstream defect is fixed. Decision rationale at [`decisions/2026-04-26-scratch-write-pretooluse-hook.md`](./decisions/2026-04-26-scratch-write-pretooluse-hook.md).
+**Vibe note**: Vibe uses declarative permissions in `.vibe/config/permissions.json` instead of hooks. The safety harness concept is implemented differently.
 
 ### [decisions/](./decisions/)
 **When to read:** Making architectural decisions, choosing between alternatives, or looking up why something was built the way it was.
@@ -47,4 +43,4 @@ Architecture Decision Records (ADRs) — permanent log of significant technical 
 ### [TEMPLATE-UPDATES/](./TEMPLATE-UPDATES/)
 **When to read:** Rolling out a template improvement to a derivative project, or formalising a new improvement so future derivative projects can adopt it.
 
-Migration packets that describe template changes in conceptual terms plus a file manifest, so a Claude in another project can compare against local files and apply the improvement without clobbering customisations.
+Migration packets that describe template changes in conceptual terms plus a file manifest, so a Vibe in another project can compare against local files and apply the improvement without clobbering customisations.
