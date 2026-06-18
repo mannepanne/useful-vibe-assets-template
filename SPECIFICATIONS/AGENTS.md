@@ -22,11 +22,11 @@ The SPECIFICATIONS folder contains **forward-looking plans** for migrating this 
 
 Development is organised into **7 sequential phases**. Each phase focuses on a specific aspect of the migration, with clear deliverables and acceptance criteria.
 
-**Current phase:** Phase 1 - Research and Foundation (not started)
+**Current phase:** Phase 2 - Documentation Migration
 
 ### Phase files (work through in order)
 
-1. **[01-research-and-planning.md](./01-research-and-planning.md)** - Phase 1: Research and Foundation
+1. **[01-research-and-planning.md](./ARCHIVE/01-research-and-planning.md)** - Phase 1: Research and Foundation (✅ COMPLETED - archived)
    Foundational research, Vibe architecture understanding, difference documentation, .vibe/ structure creation
 
 2. **[02-documentation-migration.md](./02-documentation-migration.md)** - Phase 2: Documentation Migration

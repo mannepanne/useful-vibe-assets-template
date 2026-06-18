@@ -35,14 +35,19 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 
 ## Current Migration Status
 
-**Current phase:** Phase 1 (Research and Foundation) - `.vibe/` structure created, configuration drafted
+**Current phase:** Phase 2 (Documentation Migration) - Phase 1 ✅ Complete and archived
 
-**Migration progress:**
+**Phase 1 Completed:**
 - ✅ `.vibe/` directory structure established
 - ✅ `.vibe/AGENTS.md` - Vibe collaboration principles
 - ✅ `.vibe/config/` - Permission system and project config
 - ✅ `.vibe/agents/AGENTS.md` - Subagent library index
 - ✅ `.vibe/skills/AGENTS.md` - Skills library index
+- ✅ `.vibe/hooks/AGENTS.md` - Hooks/permissions documentation
+- ✅ `AGENTS.md` (root) - Navigation index
+- ✅ `REFERENCE/vibe-learning-notes.md` - Practical findings
+- ✅ `REFERENCE/vibe-architecture-overview.md` - Architecture reference
+- ✅ `SPECIFICATIONS/ARCHIVE/01-research-and-planning.md` - Completed spec archived
 - ✅ `.vibe/hooks/AGENTS.md` - Hooks/permissions documentation
 - ⏳ REFERENCE/vibe-learning-notes.md - To be created
 - ⏳ REFERENCE/vibe-architecture-overview.md - To be created
@@ -53,7 +58,7 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 
 Development is organised into 7 sequential phases for the Vibe migration:
 
-1. **[01-research-and-planning.md](./SPECIFICATIONS/01-research-and-planning.md)** - Research and Foundation (IN PROGRESS)
+1. **[01-research-and-planning.md](./SPECIFICATIONS/ARCHIVE/01-research-and-planning.md)** - Research and Foundation (✅ COMPLETED)
    - Vibe architecture understanding
    - .vibe/ structure creation
    - Difference documentation
