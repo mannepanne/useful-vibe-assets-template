@@ -35,7 +35,7 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 
 ## Current Migration Status
 
-**Current phase:** Phase 5 (Skills Migration) - Phase 4 ✅ Complete and archived in PR #4
+**Current phase:** Phase 6 (Safety and Hooks) - Phase 5 ✅ Complete and archived in SPECIFICATIONS/ARCHIVE/05-skills-migration.md
 
 **Phase 1 Completed:**
 - ✅ `.vibe/` directory structure established
@@ -77,7 +77,23 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 - ✅ `triage-scan-patterns.txt` copied
 - ✅ Verification script created and passing
 - ✅ PR #4 merged successfully
-- ✅ Spec to be archived in SPECIFICATIONS/ARCHIVE/04-agent-subagent-migration.md
+- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/04-agent-subagent-migration.md
+
+**Phase 5 Completed:**
+- ✅ All skill files migrated from `.claude/skills/` to `.vibe/skills/`
+- ✅ `review-pr/SKILL.md` - Smart PR review dispatcher
+- ✅ `review-pr-team/SKILL.md` - Multi-perspective team review
+- ✅ `review-spec/SKILL.md` - Spec review workflow
+- ✅ `review-gate.md` - Shared gate logic for all review skills
+- ✅ `post-review-follow-through.md` - Follow-through protocol
+- ✅ `check-profile-setup/SKILL.md` - Profile setup check (new, replaces SessionStart hook)
+- ✅ `setup-profile/SKILL.md` - Profile setup guide (new)
+- ✅ Frontmatter converted to Vibe format (removed `disable-model-invocation`, updated `arguments`)
+- ✅ Agent spawning converted from `SpawnAgent` to Vibe's `task` tool
+- ✅ All `.claude/` references updated to `.vibe/` in skill files
+- ✅ `.vibe/skills/AGENTS.md` updated with comprehensive skills index
+- ✅ Verification script `SCRATCH/verify-skills.sh` created and passing
+- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/05-skills-migration.md with implementation notes
 
 ---
 
@@ -95,17 +111,18 @@ Development is organised into 7 sequential phases for the Vibe migration:
    - Updated all references throughout the project
    - Created .vibe/COLLABORATION/ directory with adapted files
 
-3. **[03-configuration-system.md](./SPECIFICATIONS/03-configuration-system.md)** - Configuration System
+3. **[03-configuration-system.md](./SPECIFICATIONS/ARCHIVE/03-configuration-system.md)** - Configuration System (✅ COMPLETED in PR #3)
    - .vibe/config/ permissions
    - Project configuration
 
-4. **[04-agent-subagent-migration.md](./SPECIFICATIONS/04-agent-subagent-migration.md)** - Agent & Subagent Migration
+4. **[04-agent-subagent-migration.md](./SPECIFICATIONS/ARCHIVE/04-agent-subagent-migration.md)** - Agent & Subagent Migration (✅ COMPLETED in PR #4)
    - Convert agent definitions
    - Test subagent workflows
 
-5. **[05-skills-migration.md](./SPECIFICATIONS/05-skills-migration.md)** - Skills Migration
+5. **[05-skills-migration.md](./SPECIFICATIONS/ARCHIVE/05-skills-migration.md)** - Skills Migration (✅ COMPLETED)
    - Convert slash commands to skills
    - Address the catch-22 problem
+   - All review skills migrated and adapted for Vibe
 
 6. **[06-safety-and-hooks.md](./SPECIFICATIONS/06-safety-and-hooks.md)** - Safety Harness & Hooks
    - Permission configuration
