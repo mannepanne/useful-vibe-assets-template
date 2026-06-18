@@ -154,17 +154,22 @@ service-account*.json
 # WARNING: If committed, may contain secrets, API keys, PII, or sensitive data
 .claude/session-state/current.md
 .claude/session-state/pr-*.md
+.vibe/session-state/current.md
+.vibe/session-state/*-*.md
 
 # Per-clone override for the review-mode flag. The committed
 # .claude/project-config.json governs what cloners inherit; this local file
 # lets a maintainer run a different prReviewMode locally (e.g. "enabled" for
 # dogfooding on the template repo) without flipping the committed default.
+# Vibe equivalent: .vibe/config/project-config.json with .vibe/config/project-config.local.json override
 .claude/project-config.local.json
+.vibe/config/project-config.local.json
 
 # Per-machine collaboration profile. The committed personal-profile.md always
 # ships the default sentinel so cloners are prompted to personalise. This local
 # file holds the operator's actual profile for their machine — never committed.
 .claude/COLLABORATION/personal-profile.local.md
+.vibe/COLLABORATION/personal-profile.local.md
 
 # Project-specific (add your own below this line)
 # Example:
