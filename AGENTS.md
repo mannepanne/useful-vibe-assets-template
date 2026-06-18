@@ -35,7 +35,7 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 
 ## Current Migration Status
 
-**Current phase:** Phase 2 (Documentation Migration) - Phase 1 ✅ Complete and archived
+**Current phase:** Phase 3 (Configuration System) - Phase 2 ✅ Complete and archived in PR #2
 
 **Phase 1 Completed:**
 - ✅ `.vibe/` directory structure established
@@ -45,12 +45,18 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 - ✅ `.vibe/skills/AGENTS.md` - Skills library index
 - ✅ `.vibe/hooks/AGENTS.md` - Hooks/permissions documentation
 - ✅ `AGENTS.md` (root) - Navigation index
-- ✅ `REFERENCE/vibe-learning-notes.md` - Practical findings
-- ✅ `REFERENCE/vibe-architecture-overview.md` - Architecture reference
+- ✅ `REFERENCE/vibe-learning-notes.md` - Practical findings (created in Phase 1)
+- ✅ `REFERENCE/vibe-architecture-overview.md` - Architecture reference (created in Phase 1)
 - ✅ `SPECIFICATIONS/ARCHIVE/01-research-and-planning.md` - Completed spec archived
-- ✅ `.vibe/hooks/AGENTS.md` - Hooks/permissions documentation
-- ⏳ REFERENCE/vibe-learning-notes.md - To be created
-- ⏳ REFERENCE/vibe-architecture-overview.md - To be created
+
+**Phase 2 Completed:**
+- ✅ `.vibe/COLLABORATION/` directory created with adapted CLAUDE.md files
+- ✅ All CLAUDE.md files renamed to AGENTS.md (root, REFERENCE/, REFERENCE/decisions/, REFERENCE/TEMPLATE-UPDATES/, SPECIFICATIONS/ARCHIVE/)
+- ✅ All internal references updated from CLAUDE.md to AGENTS.md
+- ✅ README.md and TEMPLATE-INSTRUCTIONS.md updated for Vibe
+- ✅ .claude/ directory preserved for backward compatibility
+- ✅ PR #2 merged successfully
+- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/02-documentation-migration.md
 
 ---
 
@@ -63,9 +69,10 @@ Development is organised into 7 sequential phases for the Vibe migration:
    - .vibe/ structure creation
    - Difference documentation
 
-2. **[02-documentation-migration.md](./SPECIFICATIONS/02-documentation-migration.md)** - Documentation Migration
-   - Convert CLAUDE.md → AGENTS.md files
-   - Update all references
+2. **[02-documentation-migration.md](./SPECIFICATIONS/ARCHIVE/02-documentation-migration.md)** - Documentation Migration (✅ COMPLETED in PR #2)
+   - Converted CLAUDE.md → AGENTS.md files
+   - Updated all references throughout the project
+   - Created .vibe/COLLABORATION/ directory with adapted files
 
 3. **[03-configuration-system.md](./SPECIFICATIONS/03-configuration-system.md)** - Configuration System
    - .vibe/config/ permissions
