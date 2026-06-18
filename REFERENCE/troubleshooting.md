@@ -3,7 +3,7 @@
 **When to read this:** Debugging issues, fixing deployment problems, or resolving integration errors.
 
 **Related Documents:**
-- [CLAUDE.md](../CLAUDE.md) - Project navigation index
+- [AGENTS.md](../AGENTS.md) - Project navigation index
 - [environment-setup.md](./environment-setup.md) - Environment and secrets configuration
 
 ---

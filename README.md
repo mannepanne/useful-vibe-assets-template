@@ -4,13 +4,13 @@
 > 
 > This template is currently being migrated from Claude Code to Mistral Vibe CLI. The migration is a work in progress. See [SPECIFICATIONS/AGENTS.md](./SPECIFICATIONS/AGENTS.md) for implementation phases and [SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md) for the migration vision.
 > 
-> **Current status:** Phase 1 (Research and Foundation) - Specifications created, migration underway
+> **Current status:** Phase 2 (Documentation Migration) - CLAUDE.md to AGENTS.md conversion completed
 
 My (Magnus Hultberg) battle-tested project template for working with AI coding assistants, refined over 12-18 months of AI-assisted development using Claude Code.
 
 ## What is this
 
-This template encapsulates patterns and workflows that have worked well for me when building software with AI assistants like Claude Code. It's opinionated, practical, and designed to minimise friction while maximising collaboration quality and consistency of output over time.
+This template encapsulates patterns and workflows that have worked well for me when building software with AI assistants like Mistral Vibe and Claude Code. It's opinionated, practical, and designed to minimise friction while maximising collaboration quality and consistency of output over time.
 
 ## Core principles
 
