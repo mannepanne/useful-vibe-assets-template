@@ -22,18 +22,18 @@ The SPECIFICATIONS folder contains **forward-looking plans** for migrating this 
 
 Development is organised into **7 sequential phases**. Each phase focuses on a specific aspect of the migration, with clear deliverables and acceptance criteria.
 
-**Current phase:** Phase 3 - Configuration System
+**Current phase:** Phase 4 - Agent & Subagent Migration
 
 ### Phase files (work through in order)
 
-1. **[01-research-and-planning.md](./ARCHIVE/01-research-and-planning.md)** - Phase 1: Research and Foundation (✅ COMPLETED - archived)
+1. **[01-research-and-planning.md](./ARCHIVE/01-research-and-planning.md)** - Phase 1: Research and Foundation (✅ COMPLETED - archived in PR #1)
    Foundational research, Vibe architecture understanding, difference documentation, .vibe/ structure creation
 
 2. **[02-documentation-migration.md](./ARCHIVE/02-documentation-migration.md)** - Phase 2: Documentation Migration (✅ COMPLETED - archived in PR #2)
    Converted all CLAUDE.md files to AGENTS.md, updated all references throughout. Created .vibe/COLLABORATION/ directory with adapted files. Preserved .claude/ for backward compatibility.
 
-3. **[03-configuration-system.md](./03-configuration-system.md)** - Phase 3: Configuration System
-   Create .vibe/ directory structure, project config, permission system adaptation
+3. **[03-configuration-system.md](./ARCHIVE/03-configuration-system.md)** - Phase 3: Configuration System (✅ COMPLETED - archived in PR #3)
+   Created .vibe/ directory structure, project config, permission system adaptation. Established Vibe's declarative permission model replacing Claude's hooks.
 
 4. **[04-agent-subagent-migration.md](./04-agent-subagent-migration.md)** - Phase 4: Agent & Subagent Migration
    Convert Claude agent definitions to Vibe subagent definitions, leverage task delegation

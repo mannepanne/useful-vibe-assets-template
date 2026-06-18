@@ -4,7 +4,9 @@
 **Phase name:** Configuration System
 **Estimated timeframe:** 1-2 sessions
 **Dependencies:** Phase 1 (Research and Foundation), Phase 2 (Documentation Migration) complete
-**Status:** Not started
+**Status:** ✅ COMPLETED - Merged in PR #3 on 2026-06-18
+**Implementation by:** Mistral Vibe
+**PR:** #3 - Phase 3: Configuration System - Vibe .vibe/ structure and permissions
 
 ---
 
@@ -814,5 +816,86 @@ This phase is **critical** because it establishes the configuration foundation t
 3. **Profile setup**: How to handle the SessionStart hook functionality
 
 **Key principle:** Favor **simplicity and maintainability** over perfect feature parity. It's okay if some Claude features don't have direct equivalents in Vibe, as long as the core functionality (safety, configuration, collaboration) is preserved.
+
+---
+
+## Implementation Notes
+
+### What Was Implemented
+
+All Phase 3 deliverables were completed and merged in PR #3:
+
+1. **`.vibe/` directory structure** - Created with proper organization:
+   - `.vibe/AGENTS.md` - Vibe collaboration principles (already existed from Phase 1)
+   - `.vibe/README.md` - Directory overview and structure documentation
+   - `.vibe/config/` - Configuration files directory
+   - `.vibe/COLLABORATION/` - Profile and behavioral guidance files
+   - `.vibe/agents/AGENTS.md` - Subagent library index
+   - `.vibe/skills/AGENTS.md` - Skills library index
+   - `.vibe/hooks/AGENTS.md` - Hooks documentation
+
+2. **Configuration files created:**
+   - `.vibe/config/permissions.json` - Tool permission configuration with deny/confirm/allow patterns
+   - `.vibe/config/project-config.json` - Project-level settings (prReviewMode, features)
+   - `.vibe/config/README.md` - Configuration system documentation
+
+3. **Safety harness migration:**
+   - Adapted Claude's `safety-harness.sh` (PreToolUse hook) to Vibe's declarative permission model
+   - Block tier → `deny_patterns` in permissions.json
+   - Ask tier → `confirm` mode + patterns in permissions.json
+   - Allow patterns → `allow_patterns` in permissions.json
+   - Created `REFERENCE/vibe-permissions.md` (388 lines) documenting the entire permission system
+
+4. **Git ignore updates:**
+   - Added `.vibe/session-state/*` entries
+   - Added `.vibe/config/project-config.local.json`
+   - Added `.vibe/COLLABORATION/personal-profile.local.md`
+
+5. **Testing:**
+   - Created `SCRATCH/test-permissions.sh` for verification
+   - All JSON files validated
+   - Directory structure verified
+   - Permission patterns documented
+
+### Key Differences from Claude
+
+1. **Declarative vs Imperative:** Vibe's permission system is declarative (JSON configuration) vs Claude's imperative (hook scripts that emit JSON decisions). This is simpler but less flexible.
+
+2. **No SessionStart Hook:** Vibe doesn't have an equivalent to SessionStart hook. Profile setup check must be triggered manually or via skill invocation. This creates the "catch-22" problem discussed in Phase 1.
+
+3. **Pattern Matching:** Vibe uses glob-style patterns vs Claude's more flexible hook logic. Complex conditional logic (file existence checks, etc.) requires skills or subagents.
+
+### What Worked Well
+
+- The permission pattern mapping from Claude's safety harness was straightforward
+- Vibe's integrated permission system is simpler to configure and maintain
+- The `.vibe/` directory structure provides good organization
+- Documentation in REFERENCE/ provides clear guidance for users
+
+### Challenges Encountered
+
+- Pattern matching syntax differs slightly between the systems
+- No direct equivalent for SessionStart hook functionality
+- Some Claude hook patterns required adjustment for Vibe's glob matching
+
+### Files Changed in This Phase
+
+**New files:**
+- `.vibe/README.md`
+- `.vibe/config/README.md`
+- `REFERENCE/vibe-permissions.md`
+- `SCRATCH/test-permissions.sh` (not committed - SCRATCH/ is gitignored)
+
+**Modified files:**
+- `.gitignore`
+
+**Pre-existing files (from Phase 1/2):**
+- `.vibe/AGENTS.md`
+- `.vibe/config/permissions.json`
+- `.vibe/config/project-config.json`
+- `.vibe/COLLABORATION/*`
+- `.vibe/agents/AGENTS.md`
+- `.vibe/hooks/AGENTS.md`
+- `.vibe/skills/AGENTS.md`
 
 The documentation created in this phase (especially REFERENCE/vibe-permissions.md) will be **essential reference** for anyone using or maintaining the Vibe template.
