@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "description": "Project-level configuration for Vibe template features. Checked in to git so team members share the same settings.",
+    "vibeVersion": "1.0",
+    "migrationNote": "This file replaces .claude/project-config.json. Vibe uses a declarative permission model instead of hook-based configuration."
+  },
+  
+  "reviewSystem": {
+    "mode": "prompt-on-first-use",
+    "description": "Controls automated PR review skills behavior.",
+    "options": ["enabled", "disabled", "prompt-on-first-use"],
+    "note": "In Vibe, this is checked by review skills on first invocation, not by a SessionStart hook. Users must invoke a review skill at least once to be prompted. See .vibe/skills/AGENTS.md for the catch-22 discussion."
+  },
+  
+  "permissions": {
+    "mode": "config-file",
+    "configFile": ".vibe/config/permissions.json",
+    "description": "Vibe uses declarative permissions.json instead of Claude's allowlist + hooks model."
+  },
+  
+  "features": {
+    "mcpServers": {
+      "enabled": false,
+      "description": "MCP server integration for live external resources (GitHub, docs, etc.). Vibe-unique feature not available in Claude."
+    },
+    "connectors": {
+      "enabled": false,
+      "description": "Custom tool connectors. Vibe-unique feature."
+    },
+    "localModels": {
+      "enabled": false,
+      "description": "Local model support for privacy/cost reduction. Vibe-unique feature."
+    }
+  },
+  
+  "template": {
+    "migrationPhase": "phase-1",
+    "currentFocus": "Research and Foundation",
+    "nextPhase": "phase-2"
+  }
+}
