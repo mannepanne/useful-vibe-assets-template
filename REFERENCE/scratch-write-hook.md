@@ -1,8 +1,14 @@
-# SCRATCH Write hook — `PreToolUse`
+# SCRATCH Write Handling
+
+> **For Mistral Vibe users:** This document describes the **Claude Code implementation** using PreToolUse hooks. For Vibe, SCRATCH/ writes are handled via **path-based permissions** in `.vibe/config/permissions.json`. See [vibe-safety.md](./vibe-safety.md) for details.
+
+---
+
+## Claude Code Implementation (Archive)
 
 Auto-approves `Write` tool calls whose target path is under `<project>/SCRATCH/`. The hook compensates for a Claude Code matcher quirk where `Write(/SCRATCH/*)` allow-list entries do not silence the permission prompt for `Write` even though the documented `/path` semantics say they should.
 
-The decision rationale and alternatives are in [`REFERENCE/decisions/2026-04-26-scratch-write-pretooluse-hook.md`](./decisions/2026-04-26-scratch-write-pretooluse-hook.md). This file is the operations reference: what the hook does, when it fires, when it falls through, how to extend it, how to remove it.
+The decision rationale and alternatives are in [`REFERENCE/decisions/2026-04-26-scratch-write-pretooluse-hook.md`](./decisions/2026-04-26-scratch-write-pretooluse-hook.md). This file is the operations reference for the **Claude Code version**: what the hook does, when it fires, when it falls through, how to extend it, how to remove it.
 
 ---
 

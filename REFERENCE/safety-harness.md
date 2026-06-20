@@ -1,5 +1,11 @@
 # Safety harness — `PreToolUse` hook
 
+> **NOTE:** This document describes the safety harness for the **Claude Code version** of the template.
+> 
+> For the **Mistral Vibe version**, see [vibe-safety.md](./vibe-safety.md).
+> 
+> The safety concepts are similar, but the implementation differs (hooks vs permissions).
+
 A guardrail against honest mistakes on the Bash tool. Two tiers:
 
 - **Block** — catastrophic operations are stopped before they execute. The user sees a one-line reason and an inline-bypass instruction.
