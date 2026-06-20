@@ -22,7 +22,7 @@ The SPECIFICATIONS folder contains **forward-looking plans** for migrating this 
 
 Development is organised into **7 sequential phases**. Each phase focuses on a specific aspect of the migration, with clear deliverables and acceptance criteria.
 
-**Current phase:** Phase 5 - Skills Migration
+**Current phase:** All phases completed - Migration ready for production use
 
 ### Phase files (work through in order)
 
@@ -38,14 +38,14 @@ Development is organised into **7 sequential phases**. Each phase focuses on a s
 4. **[04-agent-subagent-migration.md](./ARCHIVE/04-agent-subagent-migration.md)** - Phase 4: Agent & Subagent Migration (✅ COMPLETED - archived in PR #4)
    Migrated all Claude agent definitions to Vibe subagent profiles with proper frontmatter, tool grant asymmetry, and Vibe-specific enhancements.
 
-5. **[05-skills-migration.md](./05-skills-migration.md)** - Phase 5: Skills Migration
-   Convert slash-command skills (/review-pr, /review-pr-team, /review-spec) to Vibe skills
+5. **[05-skills-migration.md](./ARCHIVE/05-skills-migration.md)** - Phase 5: Skills Migration (✅ COMPLETED - archived in PR #5)
+   Converted all slash-command skills to Vibe skill format, adapted agent spawning to use task tool, created new skills for profile setup.
 
-6. **[06-safety-and-hooks.md](./06-safety-and-hooks.md)** - Phase 6: Safety Harness & Hooks
-   Adapt PreToolUse and SessionStart hooks to Vibe's built-in tool permission system
+6. **[06-safety-and-hooks.md](./ARCHIVE/06-safety-and-hooks.md)** - Phase 6: Safety Harness & Hooks (✅ COMPLETED - archived in PR #6)
+   Migrated all hooks to Vibe's permission system, created comprehensive safety documentation, archived all original hooks.
 
-7. **[07-validation-and-completion.md](./07-validation-and-completion.md)** - Phase 7: Validation and Completion
-   End-to-end testing, documentation finalization, backward compatibility verification
+7. **[07-validation-and-completion.md](./ARCHIVE/07-validation-and-completion.md)** - Phase 7: Validation and Completion (✅ COMPLETED - archived in PR #7)
+   Created comprehensive test suites, completed migration validation, updated all documentation, archived all original files.
 
 ### Supporting folders
 
