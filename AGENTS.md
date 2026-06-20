@@ -35,7 +35,7 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 
 ## Current Migration Status
 
-**Current phase:** Phase 6 (Safety and Hooks) - Phase 5 ✅ Complete and archived in SPECIFICATIONS/ARCHIVE/05-skills-migration.md
+**Current phase:** Phase 7 (Validation and Completion) - Phase 6 ✅ Complete and archived in SPECIFICATIONS/ARCHIVE/06-safety-and-hooks.md
 
 **Phase 1 Completed:**
 - ✅ `.vibe/` directory structure established
@@ -95,6 +95,17 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 - ✅ Verification script `SCRATCH/verify-skills.sh` created and passing
 - ✅ Spec archived in SPECIFICATIONS/ARCHIVE/05-skills-migration.md with implementation notes
 
+**Phase 6 Completed:**
+- ✅ All original hooks archived in `SPECIFICATIONS/ARCHIVE/claude-hooks/`
+- ✅ Archive README created with migration status table
+- ✅ `.vibe/config/permissions.json` updated with SCRATCH/* and SCRATCH/** patterns
+- ✅ `REFERENCE/vibe-safety.md` created - Vibe-specific safety documentation
+- ✅ `REFERENCE/safety-harness.md` updated with Vibe note
+- ✅ `REFERENCE/scratch-write-hook.md` updated with Vibe note
+- ✅ Verification script `SCRATCH/test-safety.sh` created and passing
+- ✅ All hook files preserved in `.claude/` for backward compatibility
+- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/06-safety-and-hooks.md with implementation notes
+
 ---
 
 ## Implementation phases
@@ -124,9 +135,13 @@ Development is organised into 7 sequential phases for the Vibe migration:
    - Address the catch-22 problem
    - All review skills migrated and adapted for Vibe
 
-6. **[06-safety-and-hooks.md](./SPECIFICATIONS/06-safety-and-hooks.md)** - Safety Harness & Hooks
-   - Permission configuration
-   - Safety patterns
+6. **[06-safety-and-hooks.md](./SPECIFICATIONS/ARCHIVE/06-safety-and-hooks.md)** - Safety Harness & Hooks (✅ COMPLETED)
+   - Hooks archived with comprehensive documentation
+   - SCRATCH/ write permissions configured
+   - Vibe-specific safety documentation created
+   - All safety mechanisms verified
+
+7. **[07-validation-and-completion.md](./SPECIFICATIONS/07-validation-and-completion.md)** - Validation and Completion
 
 7. **[07-validation-and-completion.md](./SPECIFICATIONS/07-validation-and-completion.md)** - Validation and Completion
    - End-to-end testing
