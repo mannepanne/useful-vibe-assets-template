@@ -1,2 +1,4 @@
 *
 !.gitignore
+!test-full-migration.sh
+!test-review-workflows.sh

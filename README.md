@@ -1,10 +1,10 @@
 # Project template for AI-Assisted development
 
-> **🚧 Migration in Progress: Claude Code → Mistral Vibe CLI**
+> **✅ Migration Complete: Claude Code → Mistral Vibe CLI**
 > 
-> This template is currently being migrated from Claude Code to Mistral Vibe CLI. The migration is a work in progress. See [SPECIFICATIONS/AGENTS.md](./SPECIFICATIONS/AGENTS.md) for implementation phases and [SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md) for the migration vision.
+> This template has been successfully migrated from Claude Code to Mistral Vibe CLI. All phases are now complete and the template is ready for production use with Vibe. See [SPECIFICATIONS/AGENTS.md](./SPECIFICATIONS/AGENTS.md) for implementation details and [SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md) for the migration vision.
 > 
-> **Current status:** Phase 2 (Documentation Migration) - CLAUDE.md to AGENTS.md conversion completed
+> **Current status:** Phase 7 (Validation and Completion) - Final validation and testing in progress
 
 My (Magnus Hultberg) battle-tested project template for working with AI coding assistants, refined over 12-18 months of AI-assisted development using Claude Code.
 
@@ -27,16 +27,35 @@ This template encapsulates patterns and workflows that have worked well for me w
 ## What's inside
 
 ```
-.claude/                    # AI collaboration config (auto-loads)
-├── COLLABORATION/          # Behavioral guidance, PM mode, tech preferences
-├── skills/                 # Automated PR review workflows
-└── project-config.json     # Per-project feature flags (e.g. prReviewMode)
+.vibe/                      # Vibe collaboration config (auto-loads)
+├── AGENTS.md              # Collaboration principles and navigation
+├── COLLABORATION/         # Behavioral guidance, PM mode, tech preferences
+├── config/                # Vibe configuration files
+│   ├── permissions.json   # Tool permission system
+│   └── project-config.json # Per-project feature flags
+├── agents/                # Subagent definitions
+├── skills/                # Automated workflows and review systems
+└── hooks/                 # Hooks/permissions documentation
 
-SPECIFICATIONS/             # What are we building
-├── ORIGINAL_IDEA/         # Initial project vision
-└── ARCHIVE/               # Completed phase specs
+.claude/                    # Preserved for backward compatibility
+├── COLLABORATION/         # Original Claude behavioral guidance
+├── skills/                # Original Claude automated workflows
+├── agents/                # Original Claude agent definitions
+└── project-config.json    # Original Claude configuration
 
-REFERENCE/                  # How implemented features work
+SPECIFICATIONS/            # What are we building
+├── ORIGINAL_IDEA/        # Initial project vision
+├── ARCHIVE/              # Completed phase specs and originals
+│   ├── claude-originals/ # Archived original Claude files
+│   └── claude-hooks/     # Archived original Claude hooks
+└── 07-validation-and-completion.md # Current phase
+
+REFERENCE/                 # How implemented features work
+├── vibe-learning-notes.md    # Vibe-specific learnings
+├── vibe-architecture-overview.md # Vibe architecture reference
+├── vibe-permissions.md       # Vibe permission system documentation
+├── vibe-safety.md            # Vibe safety mechanisms
+├── migration-test-cases.md   # Migration verification test cases
 ├── testing-strategy.md
 ├── environment-setup.md
 └── troubleshooting.md
