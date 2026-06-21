@@ -5,7 +5,7 @@
 **Related Documents:**
 - [Vibe Configuration README](../.vibe/config/README.md) - Configuration overview
 - [permissions.json](../.vibe/config/permissions.json) - Actual permission configuration
-- [Phase 3 Specification](../SPECIFICATIONS/03-configuration-system.md) - Migration details
+- [Configuration Migration Spec](../SPECIFICATIONS/ARCHIVE/migration-from-claude/03-configuration-system.md) - Historical migration details
 
 ---
 
@@ -384,5 +384,5 @@ If you customize permissions for your project, document:
 
 - [permissions.json](../.vibe/config/permissions.json) - Template's actual configuration
 - [.vibe/config/README.md](../.vibe/config/README.md) - Configuration system overview
-- [SPECIFICATIONS/03-configuration-system.md](../SPECIFICATIONS/03-configuration-system.md) - Phase 3 specification
+- [Configuration Migration Spec](../SPECIFICATIONS/ARCHIVE/migration-from-claude/03-configuration-system.md) - Historical Phase 3 specification
 - [REFERENCE/safety-harness.md](./safety-harness.md) - Original Claude safety harness (historical)

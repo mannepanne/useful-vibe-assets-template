@@ -49,7 +49,7 @@ See `.vibe/config/permissions.json` for the actual configuration.
 
 ## Migration Strategy
 
-Claude hooks will be adapted to Vibe's permission system in **Phase 6: Safety and Hooks Migration**.
+Claude hooks have been adapted to Vibe's permission system (see [Phase 6 spec](../../SPECIFICATIONS/ARCHIVE/migration-from-claude/06-safety-and-hooks.md)).
 
 ### Current Claude Hooks
 
@@ -87,5 +87,5 @@ This architectural difference means we need to rethink proactive checks.
 ## Related Documentation
 
 - [Root AGENTS.md](../AGENTS.md) - Collaboration principles
-- [Phase 6: Safety and Hooks Migration](../../SPECIFICATIONS/06-safety-and-hooks.md) - Migration plan
+- [Phase 6 Spec](../../SPECIFICATIONS/ARCHIVE/migration-from-claude/06-safety-and-hooks.md) - Historical migration plan
 - [.claude/hooks/](../.claude/hooks/) - Original Claude hooks (archive)

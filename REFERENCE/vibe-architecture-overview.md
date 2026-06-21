@@ -429,7 +429,7 @@ VIBE
 - [.vibe/AGENTS.md](../.vibe/AGENTS.md) - Collaboration principles
 - [.vibe/config/permissions.json](../.vibe/config/permissions.json) - Permission configuration
 - [REFERENCE/vibe-learning-notes.md](./vibe-learning-notes.md) - Practical differences and migration patterns
-- [SPECIFICATIONS/01-research-and-planning.md](../SPECIFICATIONS/01-research-and-planning.md) - Phase 1 specification
+- [Research and Planning Spec](../SPECIFICATIONS/ARCHIVE/migration-from-claude/01-research-and-planning.md) - Historical Phase 1 specification
 
 ---
 

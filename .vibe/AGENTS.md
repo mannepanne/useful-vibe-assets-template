@@ -160,7 +160,7 @@ This template will ship with Vibe-native review workflows. Unlike Claude's slash
 - Claude: Hook checks config at session start, prompts if needed
 - Vibe: First invocation of review skill checks config and prompts
 
-This means users need to invoke a review skill at least once to be prompted about setup. See Phase 1 spec for the catch-22 discussion and potential solutions.
+This means users need to invoke a review skill at least once to be prompted about setup. See the [migration Phase 1 spec](../SPECIFICATIONS/ARCHIVE/migration-from-claude/01-research-and-planning.md) for the catch-22 discussion and solution.
 
 ---
 

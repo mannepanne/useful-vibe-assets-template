@@ -306,7 +306,7 @@ The full migration from Claude Code to Mistral Vibe CLI has been completed acros
 ## 🔗 Related Documentation
 
 - [REFERENCE/vibe-architecture-overview.md](./vibe-architecture-overview.md) - Vibe's architecture, mental model, MCP servers, connectors (see there for Vibe-unique features)
-- [Phase 1: Research and Foundation](../SPECIFICATIONS/01-research-and-planning.md) - The spec that generated these notes
+- [Research and Foundation Spec](../SPECIFICATIONS/ARCHIVE/migration-from-claude/01-research-and-planning.md) - Historical Phase 1 specification
 - [.vibe/AGENTS.md](../.vibe/AGENTS.md) - Vibe collaboration principles
 - [.vibe/config/permissions.json](../.vibe/config/permissions.json) - Example permission configuration
 - [SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks/](../SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks/) - Archived original Claude hooks

@@ -182,7 +182,7 @@ This approach provides equivalent quality with different execution model.
 - [Root AGENTS.md](../AGENTS.md) - Collaboration principles and project navigation
 - [.vibe/agents/AGENTS.md](../agents/AGENTS.md) - Subagent library index
 - [.vibe/config/README.md](../config/README.md) - Configuration documentation
-- [SPECIFICATIONS/05-skills-migration.md](../../SPECIFICATIONS/05-skills-migration.md) - Phase 5 specification
+- [Skills Migration Spec](../../SPECIFICATIONS/ARCHIVE/migration-from-claude/05-skills-migration.md) - Historical Phase 5 specification
 - [ORIGINAL_IDEA/project-outline.md](../../ORIGINAL_IDEA/project-outline.md) - Master specification
 
 ---
