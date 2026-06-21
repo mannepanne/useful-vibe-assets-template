@@ -39,9 +39,8 @@ This template encapsulates patterns and workflows that have worked well for me w
 
 SPECIFICATIONS/            # What are we building
 ├── ORIGINAL_IDEA/        # Initial project vision
-└── ARCHIVE/              # Completed phase specs and originals
-    ├── claude-originals/ # Archived original Claude files
-    └── claude-hooks/     # Archived original Claude hooks
+└── ARCHIVE/              # Completed phase specs and migration history
+    └── migration-from-claude/ # Migration documents (Claude → Vibe)
 
 REFERENCE/                 # How implemented features work
 ├── vibe-learning-notes.md    # Vibe-specific learnings

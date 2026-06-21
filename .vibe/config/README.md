@@ -299,4 +299,4 @@ Or a `.vibe/config/permissions.local.json`:
 - [permissions.json](./permissions.json) - The actual permission configuration
 - [project-config.json](./project-config.json) - Project settings
 - [Vibe Permissions Documentation](../../REFERENCE/vibe-permissions.md) - Detailed permission model explanation
-- [Phase 3 Specification](../../SPECIFICATIONS/03-configuration-system.md) - Migration details
+- [Configuration Migration Spec](../../SPECIFICATIONS/ARCHIVE/migration-from-claude/03-configuration-system.md) - Historical migration details

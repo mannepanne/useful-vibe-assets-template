@@ -218,14 +218,14 @@ If writes to SCRATCH/ are still prompting:
 - [.vibe/config/permissions.json](../.vibe/config/permissions.json) - Current permission configuration
 - [REFERENCE/safety-harness.md](./safety-harness.md) - Original Claude safety harness (for reference)
 - [REFERENCE/scratch-write-hook.md](./scratch-write-hook.md) - Original SCRATCH/ write hook documentation
-- [SPECIFICATIONS/ARCHIVE/claude-hooks/README.md](../SPECIFICATIONS/ARCHIVE/claude-hooks/README.md) - Hook archive documentation
+- [SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks/README.md](../SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks/README.md) - Hook archive documentation
 
 ---
 
 ## Archive Reference
 
 Original Claude hooks are preserved in:
-- `SPECIFICATIONS/ARCHIVE/claude-hooks/.claude/hooks/`
-- `SPECIFICATIONS/ARCHIVE/claude-hooks/.claude/settings.json`
+- `SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks/.claude/hooks/`
+- `SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks/.claude/settings.json`
 
 These are kept for backward compatibility and reference. All current safety mechanisms use Vibe's native permission system.

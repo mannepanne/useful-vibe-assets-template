@@ -28,9 +28,9 @@ This directory contains everything Vibe needs to work effectively with this proj
 │   ├── product-management-mode.md
 │   ├── profile-setup-flow.md
 │   └── technology-preferences.md
-├── agents/                # Subagent definitions (Phase 4)
+├── agents/                # Subagent definitions
 │   └── AGENTS.md
-├── skills/                 # Skill definitions (Phase 5)
+├── skills/                 # Skill definitions
 │   └── AGENTS.md
 ├── hooks/                 # Hooks/permissions documentation
 │   └── AGENTS.md
