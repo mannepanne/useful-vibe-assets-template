@@ -2,10 +2,6 @@
 
 Navigation index and quick reference for working with this project using **Mistral Vibe**.
 
-> **🚧 Migration in Progress: Claude Code → Mistral Vibe CLI**
-> 
-> This is the Vibe version of CLAUDE.md. The template is being migrated from Claude Code to Mistral Vibe. See [SPECIFICATIONS/AGENTS.md](./SPECIFICATIONS/AGENTS.md) for implementation phases.
-
 ---
 
 ## Rules of engagement
@@ -26,148 +22,10 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 1. Create feature branch for each change
 2. Read relevant SPECIFICATIONS/ phase files
 3. Implement against acceptance criteria
-4. Review with Vibe-native workflows (in development)
+4. Review with Vibe-native workflows
 5. Merge via PR
 
 **Full specification:** [SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md)
-
----
-
-## Current Migration Status
-
-**Current phase:** Phase 7 (Validation and Completion) - Phase 7 🔄 In Progress, Core deliverables complete
-
-**Phase 1 Completed:**
-- ✅ `.vibe/` directory structure established
-- ✅ `.vibe/AGENTS.md` - Vibe collaboration principles
-- ✅ `.vibe/config/` - Permission system and project config
-- ✅ `.vibe/agents/AGENTS.md` - Subagent library index
-- ✅ `.vibe/skills/AGENTS.md` - Skills library index
-- ✅ `.vibe/hooks/AGENTS.md` - Hooks/permissions documentation
-- ✅ `AGENTS.md` (root) - Navigation index
-- ✅ `REFERENCE/vibe-learning-notes.md` - Practical findings (created in Phase 1)
-- ✅ `REFERENCE/vibe-architecture-overview.md` - Architecture reference (created in Phase 1)
-- ✅ `SPECIFICATIONS/ARCHIVE/01-research-and-planning.md` - Completed spec archived
-
-**Phase 2 Completed:**
-- ✅ `.vibe/COLLABORATION/` directory created with adapted CLAUDE.md files
-- ✅ All CLAUDE.md files renamed to AGENTS.md (root, REFERENCE/, REFERENCE/decisions/, REFERENCE/TEMPLATE-UPDATES/, SPECIFICATIONS/ARCHIVE/)
-- ✅ All internal references updated from CLAUDE.md to AGENTS.md
-- ✅ README.md and TEMPLATE-INSTRUCTIONS.md updated for Vibe
-- ✅ .claude/ directory preserved for backward compatibility
-- ✅ PR #2 merged successfully
-- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/02-documentation-migration.md
-
-**Phase 3 Completed:**
-- ✅ `.vibe/` directory structure populated with README.md
-- ✅ `.vibe/config/` directory with permissions.json, project-config.json, and README.md
-- ✅ Safety harness adapted from Claude hooks to Vibe's declarative permission model
-- ✅ `REFERENCE/vibe-permissions.md` created with comprehensive permission documentation
-- ✅ `.gitignore` updated with .vibe/ specific entries
-- ✅ PR #3 merged successfully
-- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/03-configuration-system.md
-
-**Phase 4 Completed:**
-- ✅ All agent files migrated from `.claude/agents/` to `.vibe/agents/`
-- ✅ Frontmatter converted to Vibe format (YAML array for tools, default model, no color)
-- ✅ Tool grant asymmetry maintained (spec agents have web_search/web_fetch, PR agents don't)
-- ✅ All internal references updated (CLAUDE.md → AGENTS.md, .claude/ → .vibe/)
-- ✅ Titles updated from "Agent" to "Subagent"
-- ✅ `.vibe/agents/AGENTS.md` created with comprehensive index
-- ✅ `triage-scan-patterns.txt` copied
-- ✅ Verification script created and passing
-- ✅ PR #4 merged successfully
-- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/04-agent-subagent-migration.md
-
-**Phase 5 Completed:**
-- ✅ All skill files migrated from `.claude/skills/` to `.vibe/skills/`
-- ✅ `review-pr/SKILL.md` - Smart PR review dispatcher
-- ✅ `review-pr-team/SKILL.md` - Multi-perspective team review
-- ✅ `review-spec/SKILL.md` - Spec review workflow
-- ✅ `review-gate.md` - Shared gate logic for all review skills
-- ✅ `post-review-follow-through.md` - Follow-through protocol
-- ✅ `check-profile-setup/SKILL.md` - Profile setup check (new, replaces SessionStart hook)
-- ✅ `setup-profile/SKILL.md` - Profile setup guide (new)
-- ✅ Frontmatter converted to Vibe format (removed `disable-model-invocation`, updated `arguments`)
-- ✅ Agent spawning converted from `SpawnAgent` to Vibe's `task` tool
-- ✅ All `.claude/` references updated to `.vibe/` in skill files
-- ✅ `.vibe/skills/AGENTS.md` updated with comprehensive skills index
-- ✅ Verification script `SCRATCH/verify-skills.sh` created and passing
-- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/05-skills-migration.md with implementation notes
-
-**Phase 6 Completed:**
-- ✅ All original hooks archived in `SPECIFICATIONS/ARCHIVE/claude-hooks/`
-- ✅ Archive README created with migration status table
-- ✅ `.vibe/config/permissions.json` updated with SCRATCH/* and SCRATCH/** patterns
-- ✅ `REFERENCE/vibe-safety.md` created - Vibe-specific safety documentation
-- ✅ `REFERENCE/safety-harness.md` updated with Vibe note
-- ✅ `REFERENCE/scratch-write-hook.md` updated with Vibe note
-- ✅ Verification script `SCRATCH/test-safety.sh` created and passing
-- ✅ All hook files preserved in `.claude/` for backward compatibility
-- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/06-safety-and-hooks.md with implementation notes
-
-**Phase 7 Completed:**
-- ✅ Created comprehensive test suite (`SCRATCH/test-full-migration.sh`)
-- ✅ Created review workflow tests (`SCRATCH/test-review-workflows.sh`)
-- ✅ Created migration test case documentation (`REFERENCE/migration-test-cases.md`)
-- ✅ Completed claude-originals archive with all CLAUDE.md files
-- ✅ Updated `README.md` with completed migration status and new structure
-- ✅ Enhanced `REFERENCE/vibe-learning-notes.md` with Phase 7 summary
-- ✅ All automated tests pass
-- ✅ Spec archived in SPECIFICATIONS/ARCHIVE/07-validation-and-completion.md
-
----
-
-**🎉 Migration Status: COMPLETE**
-All 7 phases completed. Template is ready for production use with Mistral Vibe CLI.
-
----
-
-## Implementation phases
-
-Development is organised into 7 sequential phases for the Vibe migration:
-
-1. **[01-research-and-planning.md](./SPECIFICATIONS/ARCHIVE/01-research-and-planning.md)** - Research and Foundation (✅ COMPLETED)
-   - Vibe architecture understanding
-   - .vibe/ structure creation
-   - Difference documentation
-
-2. **[02-documentation-migration.md](./SPECIFICATIONS/ARCHIVE/02-documentation-migration.md)** - Documentation Migration (✅ COMPLETED in PR #2)
-   - Converted CLAUDE.md → AGENTS.md files
-   - Updated all references throughout the project
-   - Created .vibe/COLLABORATION/ directory with adapted files
-
-3. **[03-configuration-system.md](./SPECIFICATIONS/ARCHIVE/03-configuration-system.md)** - Configuration System (✅ COMPLETED in PR #3)
-   - .vibe/config/ permissions
-   - Project configuration
-
-4. **[04-agent-subagent-migration.md](./SPECIFICATIONS/ARCHIVE/04-agent-subagent-migration.md)** - Agent & Subagent Migration (✅ COMPLETED in PR #4)
-   - Convert agent definitions
-   - Test subagent workflows
-
-5. **[05-skills-migration.md](./SPECIFICATIONS/ARCHIVE/05-skills-migration.md)** - Skills Migration (✅ COMPLETED)
-   - Convert slash commands to skills
-   - Address the catch-22 problem
-   - All review skills migrated and adapted for Vibe
-
-6. **[06-safety-and-hooks.md](./SPECIFICATIONS/ARCHIVE/06-safety-and-hooks.md)** - Safety Harness & Hooks (✅ COMPLETED)
-   - Hooks archived with comprehensive documentation
-   - SCRATCH/ write permissions configured
-   - Vibe-specific safety documentation created
-   - All safety mechanisms verified
-
-7. **[07-validation-and-completion.md](./SPECIFICATIONS/07-validation-and-completion.md)** - Validation and Completion
-
-7. **[07-validation-and-completion.md](./SPECIFICATIONS/07-validation-and-completion.md)** - Validation and Completion
-   - End-to-end testing
-   - Backward compatibility
-
-**Each phase includes:**
-- Clear scope and acceptance criteria
-- Testing strategy (verification for research phases)
-- Pre-commit checklist
-- PR workflow and review requirements
-- Technical considerations and edge cases
 
 ---
 
@@ -177,16 +35,14 @@ Development is organised into 7 sequential phases for the Vibe migration:
 
 ```
 .vibe/
-├── AGENTS.md                    # Vibe collaboration principles (this replaces .claude/CLAUDE.md)
+├── AGENTS.md                    # Vibe collaboration principles
+├── COLLABORATION/             # Behavioral guidance, PM mode, tech preferences
 ├── config/
-│   ├── permissions.json         # Tool permission configuration (replaces .claude/settings.json + hooks)
-│   └── project-config.json      # Project-level settings (replaces .claude/project-config.json)
-├── agents/
-│   └── AGENTS.md                # Subagent library index
-├── skills/
-│   └── AGENTS.md                # Skills library index
-└── hooks/
-    └── AGENTS.md                # Hooks/permissions documentation
+│   ├── permissions.json         # Tool permission configuration
+│   └── project-config.json      # Per-project feature flags
+├── agents/                # Subagent definitions
+├── skills/                # Automated workflows and review systems
+└── hooks/                 # Hooks/permissions documentation
 ```
 
 ### Key Files
@@ -204,9 +60,9 @@ Development is organised into 7 sequential phases for the Vibe migration:
 - **Root AGENTS.md** (this file) - Project navigation and status
 - **.vibe/AGENTS.md** - Vibe-specific collaboration principles
 - **SPECIFICATIONS/** - Active phase work
-- **SPECIFICATIONS/ARCHIVE/** - Completed phases
+- **SPECIFICATIONS/ARCHIVE/** - Completed phases and historical migration documents
 - **REFERENCE/** - How-it-works documentation
-- **.vibe/COLLABORATION/** - Behavioral guidance (to be created)
+- **.vibe/COLLABORATION/** - Behavioral guidance
 
 *Keep AGENTS.md files short (<300 lines). Break details into separate reference files.*
 
@@ -250,7 +106,7 @@ Development is organised into 7 sequential phases for the Vibe migration:
 **Traditional stack** (unchanged from original template):
 - TypeScript, Next.js, Cloudflare Workers, Supabase, Vitest
 
-*See .vibe/COLLABORATION/technology-preferences.md for rationale (once migrated).*
+*See .vibe/COLLABORATION/technology-preferences.md for rationale.*
 
 ---
 

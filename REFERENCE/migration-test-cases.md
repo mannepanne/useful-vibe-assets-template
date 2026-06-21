@@ -216,8 +216,8 @@ In case migration issues are discovered:
 2. **Major issues:** Restore from archive:
    ```bash
    # Restore original files from archive
-   cp -r SPECIFICATIONS/ARCHIVE/claude-originals/.claude/* .claude/
-   cp SPECIFICATIONS/ARCHIVE/claude-originals/SPECIFICATIONS_CLAUDE.md SPECIFICATIONS/CLAUDE.md
+   cp -r SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-originals/.claude/* .claude/
+   cp SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-originals/SPECIFICATIONS_CLAUDE.md SPECIFICATIONS/CLAUDE.md
    ```
 3. **Critical issues:** Revert to pre-migration commit
 

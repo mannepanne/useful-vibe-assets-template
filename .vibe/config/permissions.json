@@ -124,6 +124,6 @@
     "migration": "This configuration adapts the safety patterns from .claude/hooks/safety-harness.sh. The deny_patterns come from the hook's test fixtures.",
     "catch-22": "Note: Unlike Claude's PreToolUse hooks, this is declarative. There's no imperative interception - tools are either allowed, confirmed, or denied based on this config.",
     "scratch_writes": "Writes to SCRATCH/ are allowed without confirmation via paths.allow (adapting approve-scratch-write.sh hook). Patterns SCRATCH/* and SCRATCH/** cover all SCRATCH/ subdirectories.",
-    "hook_archive": "Original Claude hooks archived in SPECIFICATIONS/ARCHIVE/claude-hooks/ for reference. All three hooks (safety-harness, check-profile-setup, approve-scratch-write) have been migrated to Vibe equivalents."
+    "hook_archive": "Original Claude hooks archived in SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks/ for reference. All three hooks (safety-harness, check-profile-setup, approve-scratch-write) have been migrated to Vibe equivalents."
   }
 }

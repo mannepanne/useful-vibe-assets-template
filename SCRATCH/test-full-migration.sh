@@ -57,8 +57,8 @@ echo "PASS"
 
 # Test 6: Archive completeness
 echo "Test 6: Archive completeness"
-[ -d "SPECIFICATIONS/ARCHIVE/claude-originals" ] || { echo "FAIL: Missing claude-originals archive"; exit 1; }
-[ -d "SPECIFICATIONS/ARCHIVE/claude-hooks" ] || { echo "FAIL: Missing claude-hooks archive"; exit 1; }
+[ -d "SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-originals" ] || { echo "FAIL: Missing claude-originals archive"; exit 1; }
+[ -d "SPECIFICATIONS/ARCHIVE/migration-from-claude/claude-hooks" ] || { echo "FAIL: Missing claude-hooks archive"; exit 1; }
 echo "PASS"
 
 # Test 7: No .claude/ references (except in archive and .claude/ dir)
