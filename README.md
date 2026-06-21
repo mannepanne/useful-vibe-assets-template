@@ -6,6 +6,10 @@ My battle-tested project template for working with Mistral Vibe CLI. Originally 
 
 This template encapsulates patterns and workflows that have worked well for me when building software with AI assistants like Mistral Vibe. It's opinionated, practical, and designed to minimise friction while maximising collaboration quality and consistency of output over time.
 
+## First-time setup
+
+**Before you start:** Run `skill(name="setup-profile")` or `/setup-profile` to configure your personal collaboration profile and review system settings. This only needs to be done once per project.
+
 ## Core principles
 
 **Lifecycle-based documentation** - Documents move through clear stages (SPECIFICATIONS → REFERENCE → ARCHIVE), keeping active context minimal and focused.

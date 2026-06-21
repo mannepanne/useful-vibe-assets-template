@@ -2,6 +2,9 @@
 
 Navigation index and quick reference for working with this project using **Mistral Vibe**.
 
+> **🚀 First time with this template?**
+> Run `skill(name="setup-profile")` or `/setup-profile` to configure your personal profile and review system settings.
+
 ---
 
 ## Rules of engagement
