@@ -8,7 +8,7 @@ This template encapsulates patterns and workflows that have worked well for me w
 
 ## First-time setup
 
-**Before you start:** Run `skill(name="setup-profile")` or `/setup-profile` to configure your personal collaboration profile and review system settings. This only needs to be done once per project.
+**Before you start:** Run `skill(name="setup-profile")` to configure your personal collaboration profile and review system settings. This only needs to be done once per project.
 
 ## Core principles
 
