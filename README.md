@@ -1,16 +1,10 @@
 # Project template for AI-Assisted development
 
-> **✅ Migration Complete: Claude Code → Mistral Vibe CLI**
-> 
-> This template has been successfully migrated from Claude Code to Mistral Vibe CLI. All phases are now complete and the template is ready for production use with Vibe. See [SPECIFICATIONS/AGENTS.md](./SPECIFICATIONS/AGENTS.md) for implementation details and [SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md) for the migration vision.
-> 
-> **Current status:** Phase 7 (Validation and Completion) - Final validation and testing in progress
-
-My (Magnus Hultberg) battle-tested project template for working with AI coding assistants, refined over 12-18 months of AI-assisted development using Claude Code.
+My battle-tested project template for working with Mistral Vibe CLI. Originally adapted from my Claude Code template ([useful-assets-template](https://github.com/mannepanne/useful-assets-template)), refined over 12-18 months of AI-assisted development.
 
 ## What is this
 
-This template encapsulates patterns and workflows that have worked well for me when building software with AI assistants like Mistral Vibe and Claude Code. It's opinionated, practical, and designed to minimise friction while maximising collaboration quality and consistency of output over time.
+This template encapsulates patterns and workflows that have worked well for me when building software with AI assistants like Mistral Vibe. It's opinionated, practical, and designed to minimise friction while maximising collaboration quality and consistency of output over time.
 
 ## Core principles
 
@@ -18,7 +12,7 @@ This template encapsulates patterns and workflows that have worked well for me w
 
 **Tests as guardrails** - Tests serve dual purposes: validation as well as directional context for AI driven changes and refinements. They guide how to evolve a build, not just verify it works.
 
-**Token efficiency** - CLAUDE.md files act as "library indexes" that lazy-load context only when needed. My assumption is that this makes token usage more efficient, and leads to better results.
+**Token efficiency** - AGENTS.md files act as "library indexes" that lazy-load context only when needed. My assumption is that this makes token usage more efficient, and leads to better results.
 
 **Collaboration framework** - Clear behavioral guidelines for working with AI (directness over politeness, evidence-based pushback, systematic decision-making). Collaboration mode support for "product management" style work as well as software development.
 
@@ -45,29 +39,27 @@ This template encapsulates patterns and workflows that have worked well for me w
 
 SPECIFICATIONS/            # What are we building
 ├── ORIGINAL_IDEA/        # Initial project vision
-├── ARCHIVE/              # Completed phase specs and originals
-│   ├── claude-originals/ # Archived original Claude files
-│   └── claude-hooks/     # Archived original Claude hooks
-└── 07-validation-and-completion.md # Current phase
+└── ARCHIVE/              # Completed phase specs and originals
+    ├── claude-originals/ # Archived original Claude files
+    └── claude-hooks/     # Archived original Claude hooks
 
 REFERENCE/                 # How implemented features work
 ├── vibe-learning-notes.md    # Vibe-specific learnings
 ├── vibe-architecture-overview.md # Vibe architecture reference
 ├── vibe-permissions.md       # Vibe permission system documentation
 ├── vibe-safety.md            # Vibe safety mechanisms
-├── migration-test-cases.md   # Migration verification test cases
 ├── testing-strategy.md
 ├── environment-setup.md
 └── troubleshooting.md
 ```
 
-**Automated reviews are opt-in.** The first time you invoke `/review-pr`, `/review-pr-team`, or `/review-spec` (or the first review-adjacent moment in conversation with Claude), you'll be asked whether to enable the review system for this project. Your answer persists in `.claude/project-config.json`. For throwaway experiments where reviews are overkill, answer `no` once — all `/review-*` skills become no-ops. You can change your mind later by editing the file.
+**Automated reviews are opt-in.** The first time you invoke `review-pr`, `review-pr-team`, or `review-spec` skills, you'll be asked whether to enable the review system for this project. Your answer persists in `.vibe/config/project-config.json`. For throwaway experiments where reviews are overkill, answer `no` once — all review skills become no-ops. You can change your mind later by editing the file.
 
 ## If you want to try using this as a template
 
 1. **Use this template** (click "Use this template" button on GitHub) or download the zip and rename the folder
-2. **Open Claude in the folder and have a conversation about your project** — the template is designed to be customised through chat, not by editing files yourself
-3. **Let Claude de-templatify the docs** based on what you discussed
+2. **Open Vibe in the folder and have a conversation about your project** — the template is designed to be customised through chat, not by editing files yourself
+3. **Let Vibe de-templatify the docs** based on what you discussed
 4. **Start building** — break the project into phases, work systematically, one PR at a time
 
 Full walkthrough (with example prompts) in [TEMPLATE-INSTRUCTIONS.md](./TEMPLATE-INSTRUCTIONS.md). It's short — and aimed at non-technical users too.
@@ -86,7 +78,7 @@ After 12-18 months of LLM-assisted coding, a few things became clear:
 
 These are my preferences that I tend to reuse for all projects I dive into. YMMV, so if you try this template you should carefully review this section and make it yours.
 
-TypeScript, Next.js, Cloudflare Workers, Supabase, Vitest - but easily customizable. See `.claude/COLLABORATION/technology-preferences.md` for rationale.
+TypeScript, Next.js, Cloudflare Workers, Supabase, Vitest - but easily customizable. See `.vibe/COLLABORATION/technology-preferences.md` for rationale.
 
 ## Credits
 
