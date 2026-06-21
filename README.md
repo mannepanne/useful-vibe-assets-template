@@ -1,6 +1,6 @@
 # Project template for AI-Assisted development
 
-My battle-tested project template for working with Mistral Vibe CLI. Originally adapted from my Claude Code template ([useful-assets-template](https://github.com/mannepanne/useful-assets-template)), refined over 12-18 months of AI-assisted development.
+My (Magnus Hultberg) battle-tested project template for working with Mistral Vibe CLI. Originally adapted from my Claude Code template ([useful-assets-template](https://github.com/mannepanne/useful-assets-template)), refined over 12-18 months of AI-assisted development.
 
 ## What is this
 
