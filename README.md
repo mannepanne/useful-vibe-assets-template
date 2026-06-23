@@ -12,11 +12,11 @@ This template encapsulates patterns and workflows that have worked well for me w
 
 ## Core principles
 
-**Lifecycle-based documentation** - Documents move through clear stages (SPECIFICATIONS → REFERENCE → ARCHIVE), keeping active context minimal and focused.
+**Lifecycle-based documentation** - Documents move through clear stages (ORIGINAL IDEA → SPECIFICATIONS → REFERENCE → ARCHIVE), keeping active context minimal and focused.
 
 **Tests as guardrails** - Tests serve dual purposes: validation as well as directional context for AI driven changes and refinements. They guide how to evolve a build, not just verify it works.
 
-**Token efficiency** - AGENTS.md files act as "library indexes" that lazy-load context only when needed. My assumption is that this makes token usage more efficient, and leads to better results.
+**Token efficiency** - AGENTS.md files act as "library indexes" that lazy-load context only when needed (NOTE: works really well in Claude Code, but not supported in mistral Vibe CLI - I am hoping it will be in the future and until then I have made the two AGENTS.md that Vibe DOES read more detailed...). My opinion is that this makes token usage more efficient, and leads to better results.
 
 **Collaboration framework** - Clear behavioral guidelines for working with AI (directness over politeness, evidence-based pushback, systematic decision-making). Collaboration mode support for "product management" style work as well as software development.
 
