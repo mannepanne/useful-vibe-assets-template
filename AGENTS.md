@@ -7,28 +7,45 @@ Navigation index and quick reference for working with this project using **Mistr
 
 ---
 
-## Rules of engagement
+## Project overview
 
-Collaboration principles and ways of working: @.vibe/AGENTS.md
+**useful-vibe-assets-template** - A Vibe-optimized fork of Magnus's battle-tested AI-assisted development template.
+
+## Required Workflow
+
+**For Vibe (auto-loaded)**
+
+BEFORE implementing anything:
+1. Have a conversation with the human operator about the document in SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md
+2. Drive the conversation to define the original idea with the user and populate the document
+3. Review the outline together and iterate until approved
+4. Create phased specifications in SPECIFICATIONS/ before any code changes
+5. Only proceed to implementation after specifications are explicit and accepted
+
+Never jump to code without completing steps 1-4.
+
+**For Humans (documentation)**
+
+See: [project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md)
+
+To use this template effectively:
+- Add your original idea files (PRD, mockups, etc.) in ORIGINAL_IDEA/
+- Discuss the idea with Vibe, answering questions as they arise
+- Ask Vibe to write up the refined idea in SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md
+- Have Vibe break the project into phases and create specifications for each in SPECIFICATIONS/
+- Then proceed to implementation
+
+Collaboration principles and ways of working are defined in .vibe/AGENTS.md
+
+Full description of workflow: [TEMPLATE-INSTRUCTIONS.md](./TEMPLATE-INSTRUCTIONS.md)
+
+---
+
+## Rules of engagement
 
 When asked to remember anything, add project memory in this AGENTS.md (project root), not @.vibe/AGENTS.md.
 
 **Vibe-specific**: Vibe uses the `task` tool for subagent delegation instead of Claude's `SpawnAgent`. Use `task(agent="explore", task="...")` for complex investigations.
-
----
-
-## Project overview
-
-**useful-vibe-assets-template** - A Vibe-optimized fork of Magnus's battle-tested AI-assisted development template, enabling fair comparison between Claude Code and Mistral Vibe.
-
-**Core workflow:**
-1. Create feature branch for each change
-2. Read relevant SPECIFICATIONS/ phase files
-3. Implement against acceptance criteria
-4. Review with Vibe-native workflows
-5. Merge via PR
-
-**Full specification:** [SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md](./SPECIFICATIONS/ORIGINAL_IDEA/project-outline.md)
 
 ---
 
@@ -106,10 +123,10 @@ When asked to remember anything, add project memory in this AGENTS.md (project r
 - **Subagents**: Profile-based via `task` tool
 - **MCP Servers**: For GitHub, documentation, package registries (optional)
 
-**Traditional stack** (unchanged from original template):
-- TypeScript, Next.js, Cloudflare Workers, Supabase, Vitest
+**Typical stack**:
+- TypeScript, Next.js/Hono.js, Cloudflare Workers, Cloudflare D1, Vitest
 
-*See .vibe/COLLABORATION/technology-preferences.md for rationale.*
+*See .vibe/AGENTS.md for full technology preferences*
 
 ---
 
