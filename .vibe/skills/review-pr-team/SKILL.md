@@ -2,12 +2,10 @@
 name: review-pr-team
 description: Comprehensive PR review using agent teams - security, product, and architecture specialists who debate and challenge each other's findings. Use for critical changes requiring thorough multi-perspective analysis.
 user-invocable: true
-arguments:
-  - name: pr-number
-    description: The PR number to review
-    required: true
-    pattern: "^[0-9]+$"
+vibe-adaptation: Uses file-based agent spawning pattern (see agent-spawning.md). Arguments are extracted from user request rather than passed via skill tool.
 ---
+
+**VIBE ADAPTATION NOTE:** This skill has been updated to work with Vibe's current tool model. Since Vibe's `skill` tool does not support argument passing and `task` tool does not auto-discover agents from .md files, this skill uses the pattern defined in [agent-spawning.md](agent-spawning.md). All custom agent spawns use `agent="explore"` with the agent's system prompt loaded from the definition file.
 
 # Multi-Perspective PR Review with Agent Teams
 
@@ -34,56 +32,78 @@ This skill provides comprehensive pull request review using **agent teams** - mu
 
 ## Instructions for Vibe
 
-When this skill is invoked with a PR number (e.g., `/review-pr-team 1`):
+**When invoked** (e.g., user says "Run review-pr-team on PR 1" or "team review PR #42"):
 
-### Step 0: Review-mode gate
+### Step 0: Extract PR Number from User Request
+
+**CRITICAL:** Extract the PR number from the user's invocation message.
+
+**Extraction rules:**
+1. Look for patterns like: "PR 42", "PR#42", "#42", "pull request 42", "review-pr-team 42", "team review 42", "42"
+2. The PR number is the first positive integer (digits only) found in the invocation
+3. If multiple integers appear, use the first one that follows "PR", "#", "pull request", "review-pr-team", or "team review" keywords, OR the last integer if no keyword is found
+4. If no PR number can be extracted, ask the user: "Which PR number should I review with the team? Please provide a positive integer."
+5. Store the extracted value as `$PR_NUMBER` for use in all subsequent steps
+
+**Validation:**
+- `$PR_NUMBER` MUST match `^[0-9]+$` (positive integer, no whitespace, no shell metacharacters)
+- If validation fails, refuse with: "Invalid PR number. Please provide a single positive integer (e.g., 42)." Stop.
+
+### Step 0b: Review-mode gate
 
 Run the gate defined in [`.vibe/skills/review-gate.md`](../review-gate.md) → "Gate logic". When rendering the disabled message, substitute this skill's name: `review-pr-team`. If the gate tells you to stop, stop. If it tells you to proceed, continue to Step 1.
 
-*(If you were invoked by `/review-pr` auto-escalating to team tier, the dispatcher has already passed this check — the resolved flag will be `"enabled"` when you get here, and the gate is a fast no-op.)*
+*(If you were invoked by review-pr auto-escalating to team tier, the dispatcher has already passed this check — the resolved flag will be `"enabled"` when you get here, and the gate is a fast no-op.)*
 
 ### Step 1: Gather Context
 
 Read the PR details to provide context to all reviewers:
-- Use `gh pr view $ARGUMENTS` to get PR title, description, and metadata
-- Use `gh pr diff $ARGUMENTS` to see the actual changes
+- Use `gh pr view $PR_NUMBER` to get PR title, description, and metadata
+- Use `gh pr diff $PR_NUMBER` to see the actual changes
 - Read the root AGENTS.md file for project context
 
 ### Step 2: Spawn Reviewer Team
 
-**CRITICAL:** You must spawn multiple specialized reviewers to get different perspectives. In Vibe, we spawn them as independent tasks and then synthesize their findings.
+**CRITICAL:** You must spawn multiple specialized reviewers to get different perspectives. In Vibe, we spawn them as independent tasks using the file-based pattern and then synthesize their findings.
 
-Spawn all reviewers in parallel:
+**First, cache all system prompts** by reading the agent definition files once:
+
+1. Read `.vibe/agents/security-specialist.md` and extract system prompt (after second `---`)
+2. Read `.vibe/agents/product-reviewer.md` and extract system prompt (after second `---`)
+3. Read `.vibe/agents/architect-reviewer.md` and extract system prompt (after second `---`)
+4. Read `.vibe/agents/technical-writer.md` and extract system prompt (after second `---`)
+
+**Then spawn all reviewers in parallel:**
 
 1. **Security Specialist**:
    ```
    task: {
-     "agent": "security-specialist",
-     "task": "Conduct a security-focused review of PR #$ARGUMENTS. Follow your review checklist and output format. Focus on: secrets exposure, authentication/authorization gaps, input validation, SQL injection, XSS vulnerabilities, dependency risks, and data protection. Return your findings in a structured format with clear severity ratings."
+     "agent": "explore",
+     "task": "<security-specialist system prompt>\n\nConduct a security-focused review of PR #$PR_NUMBER. Follow your review checklist and output format. Focus on: secrets exposure, authentication/authorization gaps, input validation, SQL injection, XSS vulnerabilities, dependency risks, and data protection. Return your findings in a structured format with clear severity ratings."
    }
    ```
 
 2. **Product Manager**:
    ```
    task: {
-     "agent": "product-reviewer",
-     "task": "Conduct a product-focused review of PR #$ARGUMENTS. Follow your review checklist and output format. Focus on: user experience, feature completeness, edge cases, error handling, API design, and user-facing behavior. Return your findings with UX impact assessments."
+     "agent": "explore",
+     "task": "<product-reviewer system prompt>\n\nConduct a product-focused review of PR #$PR_NUMBER. Follow your review checklist and output format. Focus on: user experience, feature completeness, edge cases, error handling, API design, and user-facing behavior. Return your findings with UX impact assessments."
    }
    ```
 
 3. **Senior Architect**:
    ```
    task: {
-     "agent": "architect-reviewer",
-     "task": "Conduct an architecture-focused review of PR #$ARGUMENTS. Follow your review checklist and output format. Focus on: code structure, design patterns, scalability, performance implications, maintainability, and alignment with project architecture. Return your findings with architectural recommendations."
+     "agent": "explore",
+     "task": "<architect-reviewer system prompt>\n\nConduct an architecture-focused review of PR #$PR_NUMBER. Follow your review checklist and output format. Focus on: code structure, design patterns, scalability, performance implications, maintainability, and alignment with project architecture. Return your findings with architectural recommendations."
    }
    ```
 
 4. **Technical Writer**:
    ```
    task: {
-     "agent": "technical-writer",
-     "task": "Conduct a documentation-focused review of PR #$ARGUMENTS. Check that REFERENCE/ docs are updated, AGENTS.md is current, new files have ABOUT comments, and no temporal language was introduced. Follow your review checklist and output format. Return your findings."
+     "agent": "explore",
+     "task": "<technical-writer system prompt>\n\nConduct a documentation-focused review of PR #$PR_NUMBER. Check that REFERENCE/ docs are updated, AGENTS.md is current, new files have ABOUT comments, and no temporal language was introduced. Follow your review checklist and output format. Return your findings."
    }
    ```
 
@@ -149,10 +169,10 @@ After all reviewers complete their analysis, gather their findings and produce a
 
 ### Step 4: Post the Synthesized Review
 
-Build the body as a string, write it to `SCRATCH/review-pr-$ARGUMENTS-team.md` via the Write tool, then post with `--body-file`:
+Build the body as a string, write it to `SCRATCH/review-pr-$PR_NUMBER-team.md` via the Write tool, then post with `--body-file`:
 
 ```bash
-gh pr comment $ARGUMENTS --body-file SCRATCH/review-pr-$ARGUMENTS-team.md
+gh pr comment $PR_NUMBER --body-file SCRATCH/review-pr-$PR_NUMBER-team.md
 ```
 
 **Read-then-Write fallback (avoid `rm -f`).** If the Write tool errors with *"File has not been read yet"*, call **Read on the path first** to satisfy the Write prerequisite, then re-issue the Write. Do **not** use `Bash(rm -f SCRATCH/…)`.
@@ -195,14 +215,14 @@ Expected time: 2-7 minutes (depending on PR size)
 
 ## When to Use Which Review
 
-**Use `/review-pr`:**
+**Use review-pr:**
 - Quick sanity checks
 - Small, straightforward changes
 - Non-critical bug fixes
 - Documentation updates
 - You want fast feedback (1-2 minutes)
 
-**Use `/review-pr-team`:**
+**Use review-pr-team:**
 - Critical infrastructure changes
 - Security-sensitive features
 - Major architectural decisions
@@ -212,14 +232,25 @@ Expected time: 2-7 minutes (depending on PR size)
 
 ---
 
+## Example Usage
+
+```
+User: "Run review-pr-team on PR 1"
+User: "team review PR #42"
+User: "Run full team review on pull request 42"
+```
+
+---
+
 ## Vibe-Specific Notes
 
-This skill has been **significantly adapted** from Claude Code's version:
+**VIBE ADAPTATION:** This skill has been significantly updated to work with Vibe's current tool model:
 
-### Key Differences:
-1. **No Agent Teams**: Vibe does not have Claude's experimental agent teams feature. Instead, we spawn independent subagents via the `task` tool and synthesize their findings.
+### Key Differences from Claude Code:
+1. **No Agent Teams**: Vibe does not have Claude's experimental agent teams feature. Instead, we spawn independent subagents via the `task` tool using the file-based pattern and synthesize their findings.
 2. **No Real-Time Discussion**: Unlike Claude's agent teams that can broadcast and message each other, Vibe's subagents work independently. The synthesis step replicates the collaborative analysis.
 3. **Parallel Execution**: Vibe's `task` tool can spawn multiple agents in parallel, which is actually an improvement over sequential execution.
+4. **File-based agent spawning**: Uses the pattern from [agent-spawning.md](agent-spawning.md) to load agent definitions from files.
 
 ### Preserved Functionality:
 - Same reviewer roles (Security, Product, Architecture, Documentation)
@@ -229,8 +260,10 @@ This skill has been **significantly adapted** from Claude Code's version:
 - Same quality standards
 
 ### Trade-offs:
-- **Lost**: Real-time debate and consensus-building between agents
-- **Gained**: Parallel execution, explicit synthesis control, clearer result handling
-- **Different**: Discussion happens in the synthesis step rather than between agents
+- **Lost**: Real-time debate and consensus-building between agents, argument passing to skills
+- **Gained**: Parallel execution, explicit synthesis control, clearer result handling, works with current Vibe
+- **Different**: Discussion happens in the synthesis step rather than between agents; PR number extracted from user request
 
 The overall quality and thoroughness of the review should be equivalent, with the trade-off being less dynamic interaction between reviewers but more explicit control over the final output.
+
+**See also:** [agent-spawning.md](agent-spawning.md) for the spawning pattern used throughout this skill.

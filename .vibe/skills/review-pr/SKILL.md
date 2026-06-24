@@ -2,12 +2,10 @@
 name: review-pr
 description: Smart PR review dispatcher — triages the change for risk, then routes to a light, standard, or team review. Explains every decision in plain language so you can override if it got it wrong.
 user-invocable: true
-arguments:
-  - name: pr-number
-    description: The PR number to review
-    required: true
-    pattern: "^[0-9]+$"
+vibe-adaptation: Uses file-based agent spawning pattern (see agent-spawning.md). Arguments are extracted from user request rather than passed via skill tool.
 ---
+
+**VIBE ADAPTATION NOTE:** This skill has been updated to work with Vibe's current tool model. Since Vibe's `skill` tool does not support argument passing and `task` tool does not auto-discover agents from .md files, this skill uses the pattern defined in [agent-spawning.md](agent-spawning.md). All custom agent spawns use `agent="explore"` with the agent's system prompt loaded from the definition file.
 
 # Smart PR Review (Dispatcher)
 
@@ -27,36 +25,51 @@ Team is auto-selected when the change touches high-blast-radius paths. You can a
 
 ## Instructions for Vibe
 
-When invoked with a PR number (e.g., `/review-pr 42`):
+**When invoked** (e.g., user says "Run review-pr on PR 42" or "review PR #42"):
 
-### Step 0a: Review-mode gate
+### Step 0a: Extract PR Number from User Request
+
+**CRITICAL:** Extract the PR number from the user's invocation message.
+
+**Extraction rules:**
+1. Look for patterns like: "PR 42", "PR#42", "#42", "pull request 42", "review-pr 42", "42"
+2. The PR number is the first positive integer (digits only) found in the invocation
+3. If multiple integers appear, use the first one that follows "PR", "#", "pull request", or "review-pr" keywords, OR the last integer if no keyword is found
+4. If no PR number can be extracted, ask the user: "Which PR number should I review? Please provide a positive integer."
+5. Store the extracted value as `$PR_NUMBER` for use in all subsequent steps
+
+**Validation:**
+- `$PR_NUMBER` MUST match `^[0-9]+$` (positive integer, no whitespace, no shell metacharacters)
+- If validation fails, refuse with: "Invalid PR number. Please provide a single positive integer (e.g., 42)." Stop.
+
+**Applies to every subsequent step**: All `gh pr view/diff/comment` commands, file paths like `SCRATCH/review-pr-$PR_NUMBER-*.md`, and any substitution must use `$PR_NUMBER`. Do not proceed past this step if validation fails.
+
+### Step 0b: Review-mode gate
 
 Run the gate logic from [`.vibe/skills/review-gate.md`](../review-gate.md):
 
 1. Read `.vibe/config/project-config.json` (committed) and `.vibe/config/project-config.local.json` (if exists)
 2. Merge local on top of committed (local wins)
 3. Check `prReviewMode`:
-   - `"enabled"` → proceed to Step 0b
-   - `"disabled"` → reply: "The review system is disabled. Not running /review-pr. To enable, set prReviewMode to 'enabled' in .vibe/config/project-config.json." Stop.
+   - `"enabled"` → proceed to Step 1
+   - `"disabled"` → reply: "The review system is disabled. Not running review-pr. To enable, set prReviewMode to 'enabled' in .vibe/config/project-config.json." Stop.
    - `"prompt-on-first-use"` or missing → render the pitch (see review-gate.md), persist answer, then proceed or stop
-
-### Step 0b: Input validation
-
-`$ARGUMENTS` MUST match `^[0-9]+$` (positive integer) before any tool call.
-If not, refuse with: "/review-pr expects a single positive integer (PR number). Got: '<value>'. Aborting."
-
-**Applies to every subsequent step**: `gh pr view/diff/comment $ARGUMENTS` shell commands AND any `SCRATCH/review-pr-$ARGUMENTS-*.md` Write-tool path. Do not proceed past this step if validation fails. This validation is load-bearing — do not remove or relax it.
 
 ### Step 1: Triage
 
-Use task to spawn the **`triage-reviewer`** subagent:
+**Spawn the triage-reviewer agent using the file-based pattern:**
 
-```
-task: {
-  "agent": "triage-reviewer",
-  "task": "Classify PR #$ARGUMENTS for review tier. Follow your rubric and output format exactly. Return only the classification block."
-}
-```
+1. Read `.vibe/agents/triage-reviewer.md` using the `read` tool
+2. Find the line number of the second occurrence of `---` (this ends the YAML frontmatter)
+3. Extract the system prompt: all content from the line AFTER the second `---` to the end of the file
+4. Combine: `"<extracted system prompt>\n\nClassify PR #$PR_NUMBER for review tier. Follow your rubric and output format exactly. Return only the classification block."`
+5. Spawn using the task tool:
+   ```
+   task: {
+     "agent": "explore",
+     "task": "[COMBINED PROMPT FROM STEP 4 ABOVE]"
+   }
+   ```
 
 Wait for results. Parse the classification block (4 lines: TIER:, RATIONALE:, FLAGGED_PATHS:, SIZE:).
 
@@ -74,7 +87,7 @@ Use this format:
    <size>
 
 Running <tier> review now. If this looks wrong, stop me and run
-/review-pr-team $ARGUMENTS directly to force the deepest tier.
+review-pr-team on PR $PR_NUMBER directly to force the deepest tier.
 ```
 
 Example:
@@ -85,21 +98,42 @@ Example:
    Small (23 lines across 2 files)
 
 Running light review now. If this looks wrong, stop me and run
-/review-pr-team 42 directly to force the deepest tier.
+review-pr-team on PR 42 directly to force the deepest tier.
 ```
 
-**Note on interruption:** If the user presses ESC during a running sub-agent spawn, let the current tier finish, then run `/review-pr-team <N>` — each skill posts its own PR comment independently, so running them sequentially doesn't conflict.
+**Note on interruption:** If the user presses ESC during a running sub-agent spawn, let the current tier finish, then run review-pr-team on PR $PR_NUMBER — each skill posts its own PR comment independently, so running them sequentially doesn't conflict.
 
 ### Step 3: Route to the right reviewer
 
 **If `TIER: light`:**
 
-Spawn two reviewers in parallel (the narrowed scope is built into the `light-reviewer` agent definition — you do not need to pass override instructions):
+Spawn two reviewers in parallel using the file-based pattern. **First, cache the system prompts** by reading both agent files once:
 
-1. `task: {"agent": "light-reviewer", "task": "Light-tier review of PR #$ARGUMENTS. Follow your agent definition. Post nothing — return your findings."}`
-2. `task: {"agent": "technical-writer", "task": "Light-mode documentation pass for PR #$ARGUMENTS. Operate in light-mode (see your agent definition). Post nothing — return your findings."}`
+1. **Cache light-reviewer prompt:**
+   - Read `.vibe/agents/light-reviewer.md`
+   - Extract system prompt (after second `---`)
+   
+2. **Cache technical-writer prompt:**
+   - Read `.vibe/agents/technical-writer.md`
+   - Extract system prompt (after second `---`)
 
-   The `light-mode` keyword is recognised by `technical-writer.md` and switches it to terse output. Do not pass an inline output-format override — the format lives in the agent definition so that future changes to `technical-writer` propagate to both light and standard tiers automatically.
+3. **Spawn light-reviewer:**
+   ```
+   task: {
+     "agent": "explore",
+     "task": "<light-reviewer system prompt>\n\nLight-tier review of PR #$PR_NUMBER. Follow your agent definition. Post nothing — return your findings."
+   }
+   ```
+
+4. **Spawn technical-writer:**
+   ```
+   task: {
+     "agent": "explore",
+     "task": "<technical-writer system prompt>\n\nLight-mode documentation pass for PR #$PR_NUMBER. Operate in light-mode (see your agent definition). Post nothing — return your findings."
+   }
+   ```
+
+   The `light-mode` keyword is recognised by the technical-writer system prompt and switches it to terse output. Do not pass an inline output-format override — the format lives in the agent definition so that future changes to `technical-writer` propagate to both light and standard tiers automatically.
 
 Combine findings in this order: light-reviewer output, then technical-writer output (only include the tech-writer block if it found issues; otherwise a single line `✅ Documentation: no issues`).
 
@@ -108,13 +142,13 @@ Combine findings in this order: light-reviewer output, then technical-writer out
 When the signal is valid:
 
 1. Print the entire first line to chat verbatim — it carries the specific reason the reviewer flagged, which the user needs to decide whether to re-run.
-2. Tell the user: *"Light reviewer flagged this PR as potentially misclassified (see line above). Recommend re-running as `/review-pr-team <N>` for deeper analysis. I have not posted a PR comment."*
+2. Tell the user: *"Light reviewer flagged this PR as potentially misclassified (see line above). Recommend re-running as review-pr-team on PR $PR_NUMBER for deeper analysis. I have not posted a PR comment."*
 3. Stop. Do not auto-escalate — the user decides.
 
-**Posting the comment.** Build the body as a string, write it to a temp file via the Write tool (path `SCRATCH/review-pr-<N>-light.md`), then post with `--body-file`:
+**Posting the comment.** Build the body as a string, write it to a temp file via the Write tool (path `SCRATCH/review-pr-$PR_NUMBER-light.md`), then post with `--body-file`:
 
 ```bash
-gh pr comment $ARGUMENTS --body-file SCRATCH/review-pr-$ARGUMENTS-light.md
+gh pr comment $PR_NUMBER --body-file SCRATCH/review-pr-$PR_NUMBER-light.md
 ```
 
 The body must contain:
@@ -133,15 +167,37 @@ Why two agents in light tier: the triage routes docs-only PRs to `light`, and do
 
 **If `TIER: standard`:**
 
-Follow the two-reviewer flow:
+Follow the two-reviewer flow using the file-based pattern. **First, cache the system prompts:**
 
-1. Spawn **`code-reviewer`** with its default task: `Conduct a comprehensive code review of PR #$ARGUMENTS. Follow your review checklist and output format. Post nothing — return your findings.`
-2. Spawn **`technical-writer`** with: `Conduct a documentation review of PR #$ARGUMENTS. Follow your review checklist and output format. Post nothing — return your findings.`
-3. Combine findings (code review first, documentation second). If the doc reviewer found nothing, `✅ Documentation: No issues found` is sufficient.
-4. Build the body as a string, write to `SCRATCH/review-pr-$ARGUMENTS-standard.md` via the Write tool, then post:
+1. **Cache code-reviewer prompt:**
+   - If not already cached from a previous step, read `.vibe/agents/code-reviewer.md`
+   - Extract system prompt (after second `---`)
+   
+2. **Cache technical-writer prompt:**
+   - If not already cached, read `.vibe/agents/technical-writer.md`
+   - Extract system prompt (after second `---`)
+
+3. **Spawn code-reviewer:**
+   ```
+   task: {
+     "agent": "explore",
+     "task": "<code-reviewer system prompt>\n\nConduct a comprehensive code review of PR #$PR_NUMBER. Follow your review checklist and output format. Post nothing — return your findings."
+   }
+   ```
+
+4. **Spawn technical-writer:**
+   ```
+   task: {
+     "agent": "explore",
+     "task": "<technical-writer system prompt>\n\nConduct a documentation review of PR #$PR_NUMBER. Follow your review checklist and output format. Post nothing — return your findings."
+   }
+   ```
+
+5. Combine findings (code review first, documentation second). If the doc reviewer found nothing, `✅ Documentation: No issues found` is sufficient.
+6. Build the body as a string, write to `SCRATCH/review-pr-$PR_NUMBER-standard.md` via the Write tool, then post:
 
    ```bash
-   gh pr comment $ARGUMENTS --body-file SCRATCH/review-pr-$ARGUMENTS-standard.md
+   gh pr comment $PR_NUMBER --body-file SCRATCH/review-pr-$PR_NUMBER-standard.md
    ```
 
    The body must start with:
@@ -164,10 +220,10 @@ Follow the two-reviewer flow:
    to finish (it posts to the PR regardless).
    ```
 
-2. Post a **separate triage marker comment** to the PR *before* invoking the team skill (the team skill can't receive extra arguments, so the header is posted directly). Build the body as a string, write to `SCRATCH/review-pr-$ARGUMENTS-triage.md` via the Write tool, then post:
+2. Post a **separate triage marker comment** to the PR *before* invoking the team skill. Build the body as a string, write to `SCRATCH/review-pr-$PR_NUMBER-triage.md` via the Write tool, then post:
 
    ```bash
-   gh pr comment $ARGUMENTS --body-file SCRATCH/review-pr-$ARGUMENTS-triage.md
+   gh pr comment $PR_NUMBER --body-file SCRATCH/review-pr-$PR_NUMBER-triage.md
    ```
 
    The body must contain:
@@ -182,10 +238,19 @@ Follow the two-reviewer flow:
 
    Same reasoning as light/standard tier: `--body-file` avoids the brittle heredoc-quoting pattern.
 
-3. Invoke the `review-pr-team` skill using the skill tool:
+3. **Invoke the review-pr-team skill with the PR number passed via chat context:**
+   
+   Since Vibe's `skill` tool doesn't support argument passing, you need to pass the PR number via chat context. Use:
    ```
-   skill: {"name": "review-pr-team", "args": "$ARGUMENTS"}
+   skill: {"name": "review-pr-team"}
    ```
+   
+   **IMPORTANT:** Before invoking, set up the context by storing `$PR_NUMBER` in a way the review-pr-team skill can access it. Since skills are stateless, you should:
+   - Either pass it via the task description if the skill reads from context
+   - Or invoke it with the expectation that review-pr-team will also extract from the original user request
+   
+   For now, use: `skill: {"name": "review-pr-team"}` and ensure the review-pr-team skill (when updated) will extract `$PR_NUMBER` from the conversation context or re-prompt.
+   
    (The team skill handles its own orchestration)
 
 ### Step 4: User summary and follow-through
@@ -195,7 +260,7 @@ After posting, give one-line status: tier, recommendation (approve / request cha
 Then run the follow-through protocol from [post-review-follow-through.md](../post-review-follow-through.md) — re-bucket findings by action tier, surface decisions, and create GitHub issues for anything genuinely out of scope.
 
 If tier was `light` or `standard` and the review returned no findings, skip the protocol and add:
-*"Run `/review-pr-team N` if you want deeper multi-perspective analysis."*
+*"Run review-pr-team on PR $PR_NUMBER if you want deeper multi-perspective analysis."*
 
 ---
 
@@ -203,10 +268,10 @@ If tier was `light` or `standard` and the review returned no findings, skip the 
 
 | Situation | What to do |
 |---|---|
-| Want to skip triage | Run `/review-pr-team N` directly |
-| Triage chose wrong tier (too shallow) — caught during announce | Press ESC; if the interrupt doesn't land, let the current tier finish and then run `/review-pr-team N` — each skill posts its own PR comment, they don't conflict |
+| Want to skip triage | Run review-pr-team on PR N directly |
+| Triage chose wrong tier (too shallow) — caught during announce | Press ESC; if the interrupt doesn't land, let the current tier finish and then run review-pr-team on PR N — each skill posts its own PR comment, they don't conflict |
 | Triage flagged something unexpected | Read the rationale — if wrong, let Magnus know; the rubric lives in `.vibe/agents/triage-reviewer.md` |
-| Want a deeper look after a `light` or `standard` review | Run `/review-pr-team N` on the same PR — each skill posts its own PR comment, they don't conflict |
+| Want a deeper look after a `light` or `standard` review | Run review-pr-team on PR N on the same PR — each skill posts its own PR comment, they don't conflict |
 | Triage output didn't parse / `gh` command failed | Dispatcher falls back to `team` tier automatically (see Step 1 fallback) |
 
 ---
@@ -214,7 +279,9 @@ If tier was `light` or `standard` and the review returned no findings, skip the 
 ## Example usage
 
 ```
-/review-pr 42
+User: "Run review-pr on PR 42"
+User: "review PR #42"
+User: "Please review pull request 42"
 ```
 
 The dispatcher will:
@@ -227,18 +294,22 @@ The dispatcher will:
 
 ## When to use which skill
 
-- **`/review-pr N`** — default. The dispatcher picks the right tier automatically and explains why.
-- **`/review-pr-team N`** — skip triage. Use when you *already know* the change is critical, or when a lighter tier surfaced something that needs deeper analysis.
+- **review-pr** — default. Say "Run review-pr on PR N" or "review PR #N". The dispatcher picks the right tier automatically and explains why.
+- **review-pr-team** — skip triage. Say "Run review-pr-team on PR N". Use when you *already know* the change is critical, or when a lighter tier surfaced something that needs deeper analysis.
 
 ---
 
 ## Vibe-Specific Notes
 
-This skill has been adapted from Claude Code's version:
-- Agent spawning uses Vibe's `task` tool instead of the SpawnAgent action
-- Skill invocation uses Vibe's `skill` tool instead of slash commands
-- Gate logic adapted for Vibe's configuration system (`.vibe/config/`)
-- Result handling adapted for Vibe's task return format
-- All agent references updated from the `.claude/agents/` directory to `.vibe/agents/`
+**VIBE ADAPTATION:** This skill has been significantly updated to work with Vibe's current tool model:
 
-The core workflow and triage logic remain the same. The primary difference is the use of Vibe's native tools (`task`, `skill`) instead of Claude's proprietary actions.
+- **Argument passing**: Since Vibe's `skill` tool doesn't support arguments, the PR number is extracted from the user's invocation message using pattern matching
+- **Agent spawning**: Uses the file-based pattern from [agent-spawning.md](agent-spawning.md) — reads `.vibe/agents/*.md` files and spawns `explore` agents with the full system prompt
+- **No slash commands**: Uses natural language invocation ("Run review-pr on PR 42") instead of `/review-pr 42`
+- **Gate logic**: Preserved from Claude, adapted for Vibe's configuration system (`.vibe/config/`)
+- **Result handling**: Adapted for Vibe's task return format
+- **Agent paths**: All references updated from `.claude/agents/` to `.vibe/agents/`
+
+The core workflow, triage logic, and review quality remain identical. The changes are purely in the orchestration mechanism to match Vibe's current capabilities.
+
+**See also:** [agent-spawning.md](agent-spawning.md) for the spawning pattern used throughout this skill.

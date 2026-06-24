@@ -12,15 +12,15 @@ Skills are defined in SKILL.md files within subdirectories. Each skill is a self
 
 | Skill | Purpose | Invocation | Status |
 |-------|---------|------------|--------|
-| [`review-pr/`](./review-pr/SKILL.md) | Smart dispatcher: triages PR for risk, then routes to light/standard/team review | `skill(name="review-pr", args="42")` or `/review-pr 42` | ✅ Migrated |
-| [`review-pr-team/`](./review-pr-team/SKILL.md) | Full multi-perspective team review: security, product, architect, docs perspectives | `skill(name="review-pr-team", args="42")` or `/review-pr-team 42` | ✅ Migrated |
+| [`review-pr/`](./review-pr/SKILL.md) | Smart dispatcher: triages PR for risk, then routes to light/standard/team review | Say "Run review-pr on PR 42" or "review PR #42" | ✅ Migrated + Vibe-adapted |
+| [`review-pr-team/`](./review-pr-team/SKILL.md) | Full multi-perspective team review: security, product, architect, docs perspectives | Say "Run review-pr-team on PR 42" or "team review PR #42" | ✅ Migrated + Vibe-adapted |
 | [`review-gate.md`](./review-gate.md) | Shared gate logic for all review skills (checks prReviewMode) | Internal (referenced by other skills) | ✅ Migrated |
 
 ### Spec Review Skills
 
 | Skill | Purpose | Invocation | Status |
 |-------|---------|------------|--------|
-| [`review-spec/`](./review-spec/SKILL.md) | Spec review: completeness, feasibility, strategy analysis with 3 specialized reviewers | `skill(name="review-spec", args="SPECIFICATIONS/07-feature.md")` or `/review-spec SPECIFICATIONS/07-feature.md` | ✅ Migrated |
+| [`review-spec/`](./review-spec/SKILL.md) | Spec review: completeness, feasibility, strategy analysis with 3 specialized reviewers | Say "Run review-spec on SPECIFICATIONS/07-feature.md" or "review spec 07-feature" | ✅ Migrated + Vibe-adapted |
 
 ### Setup Skills
 
@@ -33,6 +33,7 @@ Skills are defined in SKILL.md files within subdirectories. Each skill is a self
 
 | Skill | Purpose | Invocation | Status |
 |-------|---------|------------|--------|
+| [`agent-spawning.md`](./agent-spawning.md) | Pattern for spawning custom agents in Vibe (file-based workaround) | Internal (referenced by other skills) | ✅ Vibe-adapted |
 | [`post-review-follow-through.md`](./post-review-follow-through.md) | Re-bucket findings, surface decisions, create GitHub issues | Internal (referenced by review skills) | ✅ Migrated |
 
 ---
@@ -41,16 +42,19 @@ Skills are defined in SKILL.md files within subdirectories. Each skill is a self
 
 ### Invoking Skills
 
-Users can invoke skills in several ways (depending on Vibe's current capabilities):
+Users invoke skills via natural language chat (Vibe's current model):
 
-1. **Slash command**: `/review-pr 42` (if Vibe supports slash commands)
-2. **Skill tool**: `skill: {"name": "review-pr", "args": "42"}`
+1. **Natural language**: "Run review-pr on PR 42", "review PR #42"
+2. **Skill tool**: `skill: {"name": "review-pr"}` (without args - parameters extracted from context)
 3. **Chat**: "Run the review-pr skill on PR 42"
+
+**VIBE NOTE:** Slash commands like `/review-pr 42` are NOT currently supported. Arguments cannot be passed via the skill tool. All parameters must be extracted from the user's message.
 
 ### Skill Structure
 
 Each skill has:
-- YAML frontmatter with metadata (name, description, arguments, user-invocable)
+- YAML frontmatter with metadata (name, description, user-invocable)
+- **Note**: The `arguments` field has been removed from all skills since Vibe doesn't support argument passing
 - Clear step-by-step instructions
 - Error handling guidelines
 - Result processing instructions
@@ -58,15 +62,25 @@ Each skill has:
 
 ### Spawning Subagents
 
-Vibe uses the `task` tool to spawn subagents (replacing Claude's `SpawnAgent`):
+**VIBE ADAPTATION:** Vibe's `task` tool does NOT auto-discover agents from `.vibe/agents/*.md` files. Use the file-based pattern instead:
 
 ```
+# Instead of:
 task: {
-  "agent": "agent-name",
-  "task": "What the agent should do",
-  "context": {"optional": "context"}
+  "agent": "triage-reviewer",
+  "task": "Classify PR #42..."
 }
+
+# Use:
+1. Read .vibe/agents/triage-reviewer.md
+2. Extract system prompt (after second ---)
+3. task: {
+     "agent": "explore",
+     "task": "<system prompt>\n\nClassify PR #42..."
+   }
 ```
+
+See [agent-spawning.md](agent-spawning.md) for the complete pattern.
 
 The skill receives results from the task and can process them programmatically.
 
